@@ -6,12 +6,15 @@ public class Player_Controller : MonoBehaviour
     private PlayerInput playerInput;
     public int playerNumber;
     [SerializeField] Transform playerCameraPoint;
-    [SerializeField] Vector2 moveDirection;
     [SerializeField] private Rigidbody rb;
 
     [Header("Player Data")]
     [SerializeField] float speed = 5;
     [SerializeField] float playerSensitivity = 1;
+
+    private Vector2 inputMove;
+    private Vector2 inputLook;
+    private float cameraPitch = 0f;
 
     void Awake()
     {
@@ -24,36 +27,26 @@ public class Player_Controller : MonoBehaviour
     public void LockCursor(bool state)
     {
         Cursor.lockState = state ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.visible = !state;
     }
 
-    // These methods are called by PlayerInput when the corresponding action is triggered
+    // Input callbacks
     public void OnMove(InputValue value)
     {
-        moveDirection = value.Get<Vector2>();
-        Debug.Log($"Player is Moving. Direction = {moveDirection}");
+        inputMove = value.Get<Vector2>();
     }
 
     public void OnOpenBomb(InputValue value)
     {
         if (value.isPressed)
         {
-
+            Debug.Log("Bomb Opened");
         }
     }
 
     public void OnLook(InputValue value)
     {
-        float mouseX = value.Get<Vector2>().x * playerSensitivity;
-        float mouseY = value.Get<Vector2>().y * playerSensitivity;
-
-        Vector3 newPlayerRotation = transform.localEulerAngles;
-        newPlayerRotation.y += mouseX;
-        transform.localRotation = Quaternion.AngleAxis(newPlayerRotation.y, Vector3.up);
-
-        Vector3 newCameraRotation = playerCameraPoint.localEulerAngles;
-        newCameraRotation.x -= mouseY;
-        newCameraRotation.x = Mathf.Clamp(newCameraRotation.x, 0, 45);
-        playerCameraPoint.localRotation = Quaternion.AngleAxis(newCameraRotation.x, Vector3.right);
+        inputLook = value.Get<Vector2>();
     }
 
     public void OnFire(InputValue value)
@@ -65,22 +58,45 @@ public class Player_Controller : MonoBehaviour
     public void OnPause(InputValue value)
     {
         if (value.isPressed && Player_Game_UI_Manager.instance != null)
-            Player_Game_UI_Manager.instance.ShowPauseMenu(!GameData.isPaused, playerNumber);
+        {
+            bool paused = !GameData.isPaused;
+            Player_Game_UI_Manager.instance.ShowPauseMenu(paused, playerNumber);
+            LockCursor(!paused);
+        }
     }
 
     void FixedUpdate()
     {
-        if (!GameData.isPaused || !GameManager.playerData[playerNumber].isDead)
-        {
-            moveDirection = transform.forward * moveDirection.y + transform.right * moveDirection.x;
-            rb.AddForce(moveDirection.normalized * Global_Game_Speed.GetFixedDeltaTime() * speed * 10, ForceMode.Force);
-        }
+        if (GameData.isPaused || GameManager.playerData[playerNumber].isDead)
+            return;
+
+        // Calculate movement direction in world space
+        Vector3 move = transform.forward * inputMove.y + transform.right * inputMove.x;
+        Vector3 velocity = move.normalized * speed;
+        rb.velocity = new Vector3(velocity.x, rb.velocity.y, velocity.z); // preserve y velocity (gravity/jumping)
+    }
+
+    void Update()
+    {
+        if (GameData.isPaused) return;
+
+        // Mouse look
+        float mouseX = inputLook.x * playerSensitivity;
+        float mouseY = inputLook.y * playerSensitivity;
+
+        // Horizontal rotation (yaw)
+        transform.Rotate(Vector3.up * mouseX);
+
+        // Vertical rotation (pitch)
+        cameraPitch -= mouseY;
+        cameraPitch = Mathf.Clamp(cameraPitch, -80f, 80f);
+        playerCameraPoint.localEulerAngles = new Vector3(cameraPitch, 0f, 0f);
     }
 
     public void AssignCamera()
     {
         Transform cameraT = Camera.main.transform;
         cameraT.SetParent(playerCameraPoint);
-        cameraT.SetLocalPositionAndRotation(new(), new());
+        cameraT.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
     }
 }
