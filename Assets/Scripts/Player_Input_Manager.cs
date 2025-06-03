@@ -35,6 +35,7 @@ public class Player_Input_Manager : MonoBehaviour
             playerInput = input,
             playerController = input.GetComponent<Player_Controller>()
         };
+        Debug.Log($"Plater Data: {pd.playerObject} | {pd.playerTransform}");
 
         GameManager.playerData.Add(pd);
 
@@ -67,6 +68,7 @@ public class Player_Input_Manager : MonoBehaviour
     {
         GameManager.instance.EventSystem_UpdateUIActions();
         GameManager.playerData[0].playerController.AssignCamera();
+        GameData.isGameStarted = true; //TODO Temp for playtesting
         //<<< Update any events here
     }
 }
