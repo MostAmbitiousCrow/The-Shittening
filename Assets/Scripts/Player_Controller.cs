@@ -1,8 +1,11 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player_Controller : MonoBehaviour
 {
+    [Header("Player Components")]
     private PlayerInput playerInput;
     public int playerNumber;
     [SerializeField] Transform playerCameraPoint;
@@ -15,6 +18,21 @@ public class Player_Controller : MonoBehaviour
     private Vector2 inputMove;
     private Vector2 inputLook;
     private float cameraPitch = 0f;
+
+    [Header("Bomb")]
+    [SerializeField] bool bombOpen;
+    [SerializeField] bool bombFlipped;
+    [SerializeField] bool bombAnimating;
+    [Space(10)]
+    [SerializeField] Transform bombPivot;
+    [SerializeField] Transform bomb;
+    [SerializeField] float animationTime = .75f;
+    [Space(10)]
+    [SerializeField] Vector3 openedRotation = new(65, 0);
+    [SerializeField] Vector3 closedRotation = new(0, 0);
+    [Space(10)]
+    [SerializeField] Vector3 timerViewRotation = new();
+    [SerializeField] Vector3 keyViewRotation = new(0, 180 , 0);
 
     void Awake()
     {
@@ -38,9 +56,10 @@ public class Player_Controller : MonoBehaviour
 
     public void OnOpenBomb(InputValue value)
     {
-        if (value.isPressed)
+        if (value.isPressed && !bombAnimating)
         {
             Debug.Log("Bomb Opened");
+            OpenBomb();
         }
     }
 
@@ -52,7 +71,12 @@ public class Player_Controller : MonoBehaviour
     public void OnFire(InputValue value)
     {
         if (value.isPressed)
-            Debug.Log("Did an action!");
+        {
+            if(bombOpen && !bombAnimating)
+            {
+                StartCoroutine(BombFlipTransition());
+            }
+        }
     }
 
     public void OnPause(InputValue value)
@@ -70,10 +94,9 @@ public class Player_Controller : MonoBehaviour
         if (GameData.isPaused || GameManager.playerData[playerNumber].isDead)
             return;
 
-        // Calculate movement direction in world space
         Vector3 move = transform.forward * inputMove.y + transform.right * inputMove.x;
         Vector3 velocity = move.normalized * speed;
-        rb.velocity = new Vector3(velocity.x, rb.velocity.y, velocity.z); // preserve y velocity (gravity/jumping)
+        rb.velocity = new Vector3(velocity.x, rb.velocity.y, velocity.z);
     }
 
     void Update()
@@ -84,10 +107,10 @@ public class Player_Controller : MonoBehaviour
         float mouseX = inputLook.x * playerSensitivity;
         float mouseY = inputLook.y * playerSensitivity;
 
-        // Horizontal rotation (yaw)
+        // Horizontal rotation
         transform.Rotate(Vector3.up * mouseX);
 
-        // Vertical rotation (pitch)
+        // Vertical rotation
         cameraPitch -= mouseY;
         cameraPitch = Mathf.Clamp(cameraPitch, -80f, 80f);
         playerCameraPoint.localEulerAngles = new Vector3(cameraPitch, 0f, 0f);
@@ -98,5 +121,59 @@ public class Player_Controller : MonoBehaviour
         Transform cameraT = Camera.main.transform;
         cameraT.SetParent(playerCameraPoint);
         cameraT.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+    }
+
+    public void OpenBomb()
+    {
+        bombOpen = !bombOpen;
+        if(!bombAnimating)
+            StartCoroutine(BombOpenTransition());
+    }
+
+    IEnumerator BombOpenTransition()
+    {
+        bombAnimating = true;
+        float t = 0;
+        Quaternion r;
+        Vector3 lerp;
+
+        while (t < animationTime)
+        {
+            t += Global_Game_Speed.GetDeltaTime();
+            lerp = Vector3.Lerp(bombOpen ? closedRotation : openedRotation, bombOpen ? openedRotation : closedRotation, t);
+            r = Quaternion.Euler(lerp.x, lerp.y, lerp.z);
+            bombPivot.localRotation = r;
+            yield return null;
+        }
+        lerp = Vector3.Lerp(bombFlipped ? keyViewRotation : timerViewRotation, bombFlipped ? timerViewRotation : keyViewRotation, 1);
+        r = Quaternion.Euler(lerp.x, lerp.y, lerp.z);
+        bomb.localRotation = r;
+
+        bombAnimating = false;
+        yield break;
+    }
+
+    IEnumerator BombFlipTransition()
+    {
+        bombAnimating = true;
+        bombFlipped = !bombFlipped;
+        float t = 0;
+        Quaternion r;
+        Vector3 lerp;
+
+        while (t < animationTime)
+        {
+            t += Global_Game_Speed.GetDeltaTime();
+            lerp = Vector3.Lerp(bombFlipped ? keyViewRotation : timerViewRotation, bombFlipped ? timerViewRotation : keyViewRotation, t);
+            r = Quaternion.Euler(lerp.x, lerp.y, lerp.z);
+            bomb.localRotation = r;
+            yield return null;
+        }
+        lerp = Vector3.Lerp(bombFlipped ? keyViewRotation : timerViewRotation, bombFlipped ? timerViewRotation : keyViewRotation, 1);
+        r = Quaternion.Euler(lerp.x, lerp.y, lerp.z);
+        bomb.localRotation = r;
+
+        bombAnimating = false;
+        yield break;
     }
 }

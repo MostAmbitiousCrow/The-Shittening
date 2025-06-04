@@ -8738,6 +8738,11 @@ PrefabInstance:
       propertyPath: startingLevel
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6979218978832166675, guid: 96bc2a7522a054757bd6c3503c6d7884,
+        type: 3}
+      propertyPath: playerSpawnpos.x
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11942,6 +11947,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPointFolder: {fileID: 1115362960}
+  patrolDestinations: []
 --- !u!1 &1685867781
 GameObject:
   m_ObjectHideFlags: 0
