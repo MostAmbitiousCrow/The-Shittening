@@ -627,16 +627,19 @@ MonoBehaviour:
       playerSoundType: 0
       sounds: []
     - listName: Took_Damage
-      playerSoundType: 0
+      playerSoundType: 1
       sounds: []
     - listName: Key_Collected
-      playerSoundType: 0
+      playerSoundType: 2
       sounds: []
     - listName: Gate_Key_Collected
-      playerSoundType: 0
+      playerSoundType: 3
       sounds: []
     - listName: Gate_Opened
-      playerSoundType: 0
+      playerSoundType: 4
+      sounds: []
+    - listName: Bomb_Explode
+      playerSoundType: 5
       sounds: []
   enemyCategory:
     categoryName: 
@@ -646,13 +649,13 @@ MonoBehaviour:
       enemySoundType: 0
       sounds: []
     - listName: Enemy_Jumpscare
-      enemySoundType: 0
+      enemySoundType: 1
       sounds: []
     - listName: Enemy_Step
-      enemySoundType: 0
+      enemySoundType: 2
       sounds: []
     - listName: Enemy_Alert
-      enemySoundType: 0
+      enemySoundType: 3
       sounds: []
   interfaceCategory:
     categoryName: 
@@ -662,25 +665,25 @@ MonoBehaviour:
       audioType: 0
       sounds: []
     - listName: Button_Press
-      audioType: 0
+      audioType: 1
       sounds: []
     - listName: Button_Back
-      audioType: 0
+      audioType: 2
       sounds: []
     - listName: Pause
-      audioType: 0
+      audioType: 3
       sounds: []
     - listName: Unpause
-      audioType: 0
+      audioType: 4
       sounds: []
     - listName: Button_GameStart
-      audioType: 0
+      audioType: 5
       sounds: []
     - listName: Player_Joined
-      audioType: 0
+      audioType: 6
       sounds: []
     - listName: Player_Left
-      audioType: 0
+      audioType: 7
       sounds: []
   musicCategory:
     categoryName: 
@@ -1066,7 +1069,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea1a3255f952341828153905001fd1db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpawnpos: {x: 0, y: 10, z: 0}
   defaultInputActions: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018,
     type: 3}
   playerCamera: {fileID: 0}
