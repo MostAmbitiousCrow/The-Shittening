@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour // By Samuel White
         playerData[0].playerController.LockCursor(true);
 
         Environment_Manager.instance.SpawnKeys();
+        playerData[0].playerController.UpdateSpawn(Game_Events_Manager.instance.playerSpawnPoint.position);
         foreach (var item in playerData) Player_ChangeActionMap(true, 0, "Player"); // Change Player Input Map
         StartCoroutine(Game_Events_Manager.instance.GameTimer());
     }
@@ -88,7 +89,6 @@ public class GameManager : MonoBehaviour // By Samuel White
 
         // Toggle Game Complete Menu
         Player_Game_UI_Manager.instance.ShowEndScreen(Player_Game_UI_Manager.GameOverEvent.Escaped);
-        Game_Events_Manager.instance.SetPlayerSpawn();
         // Player_Game_UI_Manager.instance.ShowResultsMenu(true); // <<<< Show the results menu (if applicable)
     }
     #endregion
