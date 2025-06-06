@@ -28,7 +28,7 @@ public class Main_Menu_Manager : MonoBehaviour // By Samuel White
     void Start()
     {
         settingsMenuManager.UpdateUI();
-        AudioManager.PlayMusic(AudioManager.MusicOptions.Play, 1, 2, MusicCategory.MusicSoundTypes.MainMenu);
+        AudioManager.PlayMusic(AudioManager.MusicOptions.Play, MusicCategory.MusicSoundTypes.MainMenu, 1, .5f);
         if (settingsMenuManager.gameObject.activeSelf) settingsMenuManager.gameObject.SetActive(false);
     }
 
@@ -62,7 +62,8 @@ public class Main_Menu_Manager : MonoBehaviour // By Samuel White
     public void PlayGame()
     {
         // Load the game scene
-        AudioManager.PlayMusic(AudioManager.MusicOptions.Stop, 1, 0, MusicCategory.MusicSoundTypes.None);
+        Debug.Log("Play Game");
+        AudioManager.PlayMusic(AudioManager.MusicOptions.Stop, MusicCategory.MusicSoundTypes.None, 1, 0);
         GameData.currentLevel = Scene_Loader_Transition.SceneNames.Level_1;
         Scene_Loader_Transition.LoadScene(GameData.currentLevel);
     }

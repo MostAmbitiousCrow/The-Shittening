@@ -70,9 +70,9 @@ public class AudioManager : MonoBehaviour // By Samuel White
     [HideInInspector]
     public enum MusicOptions
     {
-        Play, Pause, Stop, Resume
+        Play, Pause, Stop, Resume, Overlap
     }
-    public static void PlayMusic(MusicOptions option , float volume, float volumeTime, MusicCategory.MusicSoundTypes music)
+    public static void PlayMusic(MusicOptions option, MusicCategory.MusicSoundTypes music, float volume = 1, float volumeTime = 0)
     {
         AudioSource a = instance.musicAudioSource;
         if (music != MusicCategory.MusicSoundTypes.None)
@@ -90,7 +90,6 @@ public class AudioManager : MonoBehaviour // By Samuel White
         if (volumeTime > 0)
         {
             instance.StartCoroutine(instance.MusicTransition(volume, volumeTime, option));
-            if (music == MusicCategory.MusicSoundTypes.Game_Intro) instance.StartCoroutine(instance.GameMusicLoop()); // Loop Gameplay Music
         }
         else
         {
@@ -100,7 +99,6 @@ public class AudioManager : MonoBehaviour // By Samuel White
                 a.clip = null;
                 a.Stop();
             }
-            else if (music == MusicCategory.MusicSoundTypes.Game_Intro) instance.StartCoroutine(instance.GameMusicLoop()); // Loop Gameplay Music
             switch (option)
             {
                 case MusicOptions.Play:
@@ -108,12 +106,16 @@ public class AudioManager : MonoBehaviour // By Samuel White
                     break;
                 case MusicOptions.Pause:
                     a.Pause();
-                    return;
+                    break;
                 case MusicOptions.Stop:
                     a.Stop();
                     break;
                 case MusicOptions.Resume:
                     a.UnPause();
+                    break;
+                case MusicOptions.Overlap:
+                    a.time = a.time;
+                    a.Play();
                     break;
             }
         }
@@ -153,13 +155,6 @@ public class AudioManager : MonoBehaviour // By Samuel White
         }
         if (option == MusicOptions.Stop) musicAudioSource.Stop();
         else if (option == MusicOptions.Pause) musicAudioSource.Pause();
-    }
-
-    private IEnumerator GameMusicLoop()
-    {
-        yield return new WaitForSeconds(musicCategory.soundList[(int)MusicCategory.MusicSoundTypes.Game_Intro].music.length);
-        PlayMusic(MusicOptions.Play, 1, 0, MusicCategory.MusicSoundTypes.Game_Loop);
-        yield break;
     }
 
     public enum AudioDataTypes
@@ -370,7 +365,7 @@ public struct PlayerCategory
 {
     [HideInInspector] public string categoryName; //  Name of Sound Category
     public AudioSource audioSource;
-    public enum PlayerSoundTypes { Jumped, Took_Damage, Attacked, } // <<< Add Player Sounds Here
+    public enum PlayerSoundTypes { Jumped, Took_Damage, Key_Collected, Gate_Key_Collected, Gate_Opened, Bomb_Explode } // <<< Add Player Sounds Here
     [SerializeField] public SoundList[] soundList; // List of Types of Sounds
     [Serializable]
     public struct SoundList
@@ -386,7 +381,7 @@ public struct EnemyCategory
 {
     [HideInInspector] public string categoryName; //  Name of Sound Category
     public AudioSource audioSource;
-    public enum EnemySoundTypes { Enemy_Attack, Enemy_Defeated} // <<< Add Enemy Sounds Here
+    public enum EnemySoundTypes { Enemy_Attack, Enemy_Jumpscare, Enemy_Step, Enemy_Alert} // <<< Add Enemy Sounds Here
     [SerializeField] public SoundList[] soundList; // List of Types of Sounds
     [Serializable]
     public struct SoundList
@@ -417,7 +412,7 @@ public struct InterfaceCategory
 public struct MusicCategory
 {
     [HideInInspector] public string categoryName; //  Name of Sound Category
-    public enum MusicSoundTypes { MainMenu, Game_Intro, Game_Loop, Boss, None} // <<< Add Music Here
+    public enum MusicSoundTypes { MainMenu, AmbientMusic, ChaseMusic, None} // <<< Add Music Here
     [SerializeField] public SoundList[] soundList; // List of Types of Sounds
     [Serializable]
     public struct SoundList

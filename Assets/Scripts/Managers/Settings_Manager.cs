@@ -59,8 +59,9 @@ public class Settings_Manager : MonoBehaviour // By Samuel White
     public float defaultGameSpeed = 1f; // Global Gameplay Speed Multiplier
     public bool defaultPlayerAutoShoot = false; // 0 = false, 1 = true
     public bool defaultEnableParticles = true; // 0 = false, 1 = true
-    public bool DefaultPlayerInvicible = false;
+    public bool defaultPlayerInvicible = false;
     [Range(0, 1)] public float defaultDamageFlashIntensity = 1f;
+    public float cursorSensitivity = 1;
 
     // =========================================
 
@@ -110,7 +111,7 @@ public class Settings_Manager : MonoBehaviour // By Samuel White
             playerAutoShoot = PlayerPrefs.GetInt("PlayerAutoShoot", defaultPlayerAutoShoot ? 1 : 0) == 1; // 0 = false, 1 = true
             gameSpeed = PlayerPrefs.GetFloat("GameSpeed", defaultGameSpeed); // Global Gameplay Speed Multiplier. 1 = normal speed
             // Other
-            PlayerPrefs.GetInt("PlayerInvincibility", DefaultPlayerInvicible ? 1 : 0);
+            PlayerPrefs.GetInt("PlayerInvincibility", defaultPlayerInvicible ? 1 : 0);
 
         Debug.Log("Settings loaded");
     }
@@ -184,7 +185,7 @@ public class Settings_Manager : MonoBehaviour // By Samuel White
 
         gameSpeed = instance.defaultGameSpeed;
         playerAutoShoot = instance.defaultPlayerAutoShoot;
-        playerInvicible = instance.DefaultPlayerInvicible;
+        playerInvicible = instance.defaultPlayerInvicible;
 
         SaveSettings();
     }

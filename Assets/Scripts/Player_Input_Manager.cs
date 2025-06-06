@@ -67,8 +67,9 @@ public class Player_Input_Manager : MonoBehaviour
     void UpdatePlayerEvents()
     {
         GameManager.instance.EventSystem_UpdateUIActions();
-        GameManager.playerData[0].playerController.AssignCamera();
-        GameData.isGameStarted = true; //TODO Temp for playtesting
+        GameManager.playerData[0].playerController.AssignCamera(false);
+
+        // GameManager.instance.StartGame();
         //<<< Update any events here
     }
 }

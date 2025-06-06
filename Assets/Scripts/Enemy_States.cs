@@ -1,3 +1,4 @@
+using System.Data;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -5,7 +6,8 @@ public class Enemy_StateMachine : MonoBehaviour
 {
     public NavMeshAgent meshAgent;
     public bool playerVisible;
-    [SerializeField] LayerMask layerMask;
+    [SerializeField] LayerMask wallLayer;
+    public LayerMask playerLayer;
     public Enemy_State CurrentState { set; get; }
     public PatrolState patrolState;
     public ChaseState chaseState;
@@ -14,6 +16,25 @@ public class Enemy_StateMachine : MonoBehaviour
     public float visibilityMeter = 5f; // seconds of lost sight before giving up
     public float visibilityMeterMax = 5f;
     public float patrolDelay = 1f;
+    public bool playerIsBehind;
+    public float attackRange = 2;
+
+    public enum Enemy_States
+    {
+        Patrol, Chase
+    }
+    public Enemy_States state;
+
+    enum Enemy_Stages
+    {
+        Stage_1, Stage_2, Stage_3, Stage_4
+    }
+    [SerializeField] Enemy_Stages stage;
+    [Space(10)]
+    public SpriteRenderer frontSR;
+    public SpriteRenderer backSR;
+    [Space(10)]
+    public Animator animator;
 
     void Awake()
     {
@@ -23,8 +44,6 @@ public class Enemy_StateMachine : MonoBehaviour
 
     void Start()
     {
-        // if (Environment_Manager.instance != null)
-        //     Environment_Manager.instance.SendMessage("GetPatrols");
         ChangeState(patrolState);
     }
 
@@ -40,6 +59,7 @@ public class Enemy_StateMachine : MonoBehaviour
         if (GameData.isGameStarted)
         {
             DetectPlayer();
+            GetPlayerDirection();
             CurrentState.LogicUpdate();
         }
     }
@@ -48,7 +68,7 @@ public class Enemy_StateMachine : MonoBehaviour
     {
         Vector3 playerPos = GameManager.playerData[0].playerTransform.position;
         // If linecast hits something in the wall layer, player is NOT visible
-        if (!Physics.Linecast(transform.position, playerPos, layerMask))
+        if (!Physics.Linecast(transform.position, playerPos, wallLayer))
         {
             playerVisible = true;
         }
@@ -56,6 +76,33 @@ public class Enemy_StateMachine : MonoBehaviour
         {
             playerVisible = false;
         }
+    }
+
+    void GetPlayerDirection()
+    {
+        Vector3 toPlayer = (GameManager.playerData[0].playerTransform.position - transform.position).normalized;
+        float dot = Vector3.Dot(transform.forward, toPlayer);
+        playerIsBehind = dot < 0f;
+
+        backSR.enabled = playerIsBehind;
+        frontSR.enabled = !playerIsBehind;
+    }
+
+    public void UpdateStage(bool setState = false, int amount = 1)
+    {
+        if (setState)
+        {
+            stage = (Enemy_Stages)amount;
+        }
+        else stage = (Enemy_Stages)amount++;
+
+
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }
 
@@ -80,10 +127,7 @@ public abstract class Enemy_State
         isExitingState = true;
         isAnimationFinished = true;
     }
-    public virtual void LogicUpdate() { }
-    public virtual void PhysicsUpdate() { }
-    public virtual void TransitionChecks() { }
-    public virtual void AnimationTrigger() { isAnimationFinished = true; }
+    public virtual void LogicUpdate() {  }
 }
 
 public class PatrolState : Enemy_State
@@ -96,6 +140,10 @@ public class PatrolState : Enemy_State
     public override void Enter()
     {
         base.Enter();
+        stateMachine.state = Enemy_StateMachine.Enemy_States.Patrol;
+        AudioManager.PlayMusic(AudioManager.MusicOptions.Overlap, MusicCategory.MusicSoundTypes.AmbientMusic, 1);
+        delayTime = 0;
+        stateMachine.animator.SetTrigger("Moving"); // Move
         PickNewDestination();
     }
 
@@ -104,22 +152,23 @@ public class PatrolState : Enemy_State
         base.LogicUpdate();
 
         // If player is seen, switch to chase
-        if (stateMachine.playerVisible)
+        if (stateMachine.playerVisible && !stateMachine.playerIsBehind)
         {
             stateMachine.ChangeState(stateMachine.chaseState);
             return;
         }
 
-        // Move to current destination
+        // Move to random destination
         if (stateMachine.currentDestination != null)
         {
             stateMachine.meshAgent.destination = stateMachine.currentDestination.position;
             float dist = Vector3.Distance(stateMachine.transform.position, stateMachine.currentDestination.position);
-            Debug.Log($"Distance: {dist}");
+            // Debug.Log($"Distance: {dist}");
             if (dist < arrivalThreshold)
             {
+                stateMachine.animator.SetTrigger("Idle"); // Idle
                 delayTime += Global_Game_Speed.GetDeltaTime();
-                Debug.Log($"Delay Time: {delayTime}");
+                // Debug.Log($"Delay Time: {delayTime}");
                 if (delayTime > stateMachine.patrolDelay)
                 {
                     delayTime = 0;
@@ -132,10 +181,12 @@ public class PatrolState : Enemy_State
     private void PickNewDestination()
     {
         System.Collections.Generic.List<Transform> patrols = Environment_Manager.instance.patrolDestinations;
-        if (patrols == null || patrols.Count == 0) return;
+        if (patrols == null || patrols.Count == 0) Debug.LogError("No Patrol Points");
         int id = Random.Range(0, patrols.Count);
         stateMachine.currentDestination = patrols[id];
         stateMachine.meshAgent.destination = stateMachine.currentDestination.position;
+        stateMachine.animator.ResetTrigger("Idle"); // Reset Idle
+        stateMachine.animator.SetTrigger("Moving"); // Move
     }
 }
 
@@ -143,19 +194,37 @@ public class ChaseState : Enemy_State
 {
     private readonly float loseRate = 1.5f; // seconds to lose sight
     private readonly float gainRate = 2.5f; // seconds to fill meter
+    private readonly float attackCooldown = 1;
+    private float t = 0;
+    private bool attacked = false;
 
     public ChaseState(Enemy_StateMachine stateMachine) : base(stateMachine) { }
 
     public override void Enter()
     {
         base.Enter();
-        // Optionally play alert animation/sound
+        stateMachine.state = Enemy_StateMachine.Enemy_States.Chase;
+        AudioManager.PlayMusic(AudioManager.MusicOptions.Overlap, MusicCategory.MusicSoundTypes.ChaseMusic, 1);
+        stateMachine.animator.SetTrigger("Moving"); // Move
+        attacked = false;
+        // TODO Play alert animation/sound
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-
+        if (attacked)
+        {
+            t += Global_Game_Speed.GetDeltaTime();
+            stateMachine.meshAgent.isStopped = true;
+            if (t > attackCooldown)
+            {
+                attacked = false;
+                t = 0;
+                stateMachine.meshAgent.isStopped = false;
+            }
+            return;
+        }
         Vector3 playerPos = GameManager.playerData[0].playerTransform.position;
         stateMachine.meshAgent.destination = playerPos;
 
@@ -176,6 +245,15 @@ public class ChaseState : Enemy_State
         {
             stateMachine.visibilityMeter = 0f;
             stateMachine.ChangeState(stateMachine.patrolState);
+        }
+
+        float dist = Vector3.Distance(stateMachine.transform.position, playerPos);
+        if (dist < stateMachine.attackRange && !attacked)
+        {
+            GameManager.playerData[0].playerController.Damage();
+            attacked = true;
+            stateMachine.animator.SetTrigger("Attack");
+            Debug.Log("Player Attacked");
         }
     }
 }

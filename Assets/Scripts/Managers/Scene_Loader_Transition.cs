@@ -55,6 +55,7 @@ public class Scene_Loader_Transition : MonoBehaviour // Made by Samuel White
         FadeObject.SetActive(true);
         fadeImage.raycastTarget = true;
         isLoading = true;
+        Debug.Log($"Scene Transitioning to: {sceneName}");
 
         // Fade in
         for (float t = 0; t < fadeTime; t += Time.unscaledDeltaTime)

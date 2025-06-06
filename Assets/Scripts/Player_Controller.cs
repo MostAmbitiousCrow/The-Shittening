@@ -1,5 +1,5 @@
 using System.Collections;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,7 +9,8 @@ public class Player_Controller : MonoBehaviour
     private PlayerInput playerInput;
     public int playerNumber;
     [SerializeField] Transform playerCameraPoint;
-    [SerializeField] private Rigidbody rb;
+    [SerializeField] Rigidbody rb;
+    [SerializeField] TextMeshPro bombText;
 
     [Header("Player Data")]
     [SerializeField] float speed = 5;
@@ -32,14 +33,18 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] Vector3 closedRotation = new(0, 0);
     [Space(10)]
     [SerializeField] Vector3 timerViewRotation = new();
-    [SerializeField] Vector3 keyViewRotation = new(0, 180 , 0);
+    [SerializeField] Vector3 keyViewRotation = new(0, 180, 0);
+
+    [Header("Health")]
+    [SerializeField] float damageFlashTime = .25f;
+    public int Health { get; private set; } = 3;
+    public int MaxHealth { get; private set; } = 3;
 
     void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
         playerNumber = playerInput.playerIndex;
-        LockCursor(true);
-        transform.position = GameManager.instance.playerSpawnpos;
+        Health = MaxHealth;
     }
 
     public void LockCursor(bool state)
@@ -59,7 +64,7 @@ public class Player_Controller : MonoBehaviour
         if (value.isPressed && !bombAnimating)
         {
             Debug.Log("Bomb Opened");
-            OpenBomb();
+            // OpenBomb();
         }
     }
 
@@ -72,13 +77,14 @@ public class Player_Controller : MonoBehaviour
     {
         if (value.isPressed)
         {
-            if(bombOpen && !bombAnimating)
+            if (bombOpen && !bombAnimating)
             {
                 StartCoroutine(BombFlipTransition());
             }
         }
     }
 
+    #region Pause
     public void OnPause(InputValue value)
     {
         if (value.isPressed && Player_Game_UI_Manager.instance != null)
@@ -88,7 +94,9 @@ public class Player_Controller : MonoBehaviour
             LockCursor(!paused);
         }
     }
+    #endregion
 
+    #region Movement
     void FixedUpdate()
     {
         if (GameData.isPaused || GameManager.playerData[playerNumber].isDead)
@@ -99,6 +107,9 @@ public class Player_Controller : MonoBehaviour
         rb.velocity = new Vector3(velocity.x, rb.velocity.y, velocity.z);
     }
 
+    #endregion
+
+    #region Camera Look
     void Update()
     {
         if (GameData.isPaused) return;
@@ -115,43 +126,53 @@ public class Player_Controller : MonoBehaviour
         cameraPitch = Mathf.Clamp(cameraPitch, -80f, 80f);
         playerCameraPoint.localEulerAngles = new Vector3(cameraPitch, 0f, 0f);
     }
+    #endregion
 
-    public void AssignCamera()
+    public void AssignCamera(bool state)
     {
-        Transform cameraT = Camera.main.transform;
-        cameraT.SetParent(playerCameraPoint);
-        cameraT.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-    }
-
-    public void OpenBomb()
-    {
-        bombOpen = !bombOpen;
-        if(!bombAnimating)
-            StartCoroutine(BombOpenTransition());
-    }
-
-    IEnumerator BombOpenTransition()
-    {
-        bombAnimating = true;
-        float t = 0;
-        Quaternion r;
-        Vector3 lerp;
-
-        while (t < animationTime)
+        if (!state)
         {
-            t += Global_Game_Speed.GetDeltaTime();
-            lerp = Vector3.Lerp(bombOpen ? closedRotation : openedRotation, bombOpen ? openedRotation : closedRotation, t);
-            r = Quaternion.Euler(lerp.x, lerp.y, lerp.z);
-            bombPivot.localRotation = r;
-            yield return null;
+            if (playerCameraPoint.childCount > 0 && playerCameraPoint.GetChild(0) != null)
+                Destroy(playerCameraPoint.GetChild(0).gameObject);
         }
-        lerp = Vector3.Lerp(bombFlipped ? keyViewRotation : timerViewRotation, bombFlipped ? timerViewRotation : keyViewRotation, 1);
-        r = Quaternion.Euler(lerp.x, lerp.y, lerp.z);
-        bomb.localRotation = r;
-
-        bombAnimating = false;
-        yield break;
+        else
+        {
+            Transform cameraT = Camera.main.transform;
+            cameraT.SetParent(playerCameraPoint);
+            cameraT.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        }
     }
+
+    #region Bomb Controls
+    // public void OpenBomb()
+    // {
+    //     bombOpen = !bombOpen;
+    //     if (!bombAnimating)
+    //         StartCoroutine(BombOpenTransition());
+    // }
+
+    // IEnumerator BombOpenTransition()
+    // {
+    //     bombAnimating = true;
+    //     float t = 0;
+    //     Quaternion r;
+    //     Vector3 lerp;
+
+    //     while (t < animationTime)
+    //     {
+    //         t += Global_Game_Speed.GetDeltaTime();
+    //         lerp = Vector3.Lerp(bombOpen ? closedRotation : openedRotation, bombOpen ? openedRotation : closedRotation, t);
+    //         r = Quaternion.Euler(lerp.x, lerp.y, lerp.z);
+    //         bombPivot.localRotation = r;
+    //         yield return null;
+    //     }
+    //     lerp = Vector3.Lerp(bombFlipped ? keyViewRotation : timerViewRotation, bombFlipped ? timerViewRotation : keyViewRotation, 1);
+    //     r = Quaternion.Euler(lerp.x, lerp.y, lerp.z);
+    //     bomb.localRotation = r;
+
+    //     bombAnimating = false;
+    //     yield break;
+    // }
 
     IEnumerator BombFlipTransition()
     {
@@ -176,4 +197,33 @@ public class Player_Controller : MonoBehaviour
         bombAnimating = false;
         yield break;
     }
+    #endregion
+
+    #region Bomb Timer
+    public void UpdateBomb(float time)
+    {
+        // Clamp to non-negative
+        time = Mathf.Max(0, time);
+
+        // Get minutes, seconds, and milliseconds
+        int minutes = (int)(time / 60);
+        int seconds = (int)(time % 60);
+
+        // Format as analog-like string
+        bombText.text = $"{minutes:00}:{seconds:00}";
+    }
+    #endregion
+
+    #region Health and Damage
+    public void Damage()
+    {
+        Health--;
+        if (Health <= 0)
+        {
+            GameManager.instance.GameOver(Player_Game_UI_Manager.GameOverEvent.Killed);
+            return;
+        }
+        Player_Game_UI_Manager.instance.DamageFlashEvent();
+    }
+    #endregion
 }

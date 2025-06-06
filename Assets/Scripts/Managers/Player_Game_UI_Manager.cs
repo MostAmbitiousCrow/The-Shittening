@@ -1,4 +1,6 @@
+using System.Collections;
 using TMPro;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +19,12 @@ public class Player_Game_UI_Manager : MonoBehaviour // By Samuel White
     [Space(10)]
 
     [SerializeField] Image[] playerHealthBars; // 0 = Player 1, 1 = Player 2
-    [SerializeField] TextMeshProUGUI[] playerScoreTexts; // 0 = Player 1, 1 = Player 2
+    [SerializeField] Image damageFlashImage;
+    [SerializeField] Color startColor = Color.red;
+    [SerializeField] Color endColor = Color.red;
+    [Space(10)]
+    [SerializeField] Color explosionStartColor = Color.yellow;
+    [SerializeField] Color explosionEndColor = Color.black;
     
     [Space(10)]
     
@@ -28,8 +35,10 @@ public class Player_Game_UI_Manager : MonoBehaviour // By Samuel White
     [Header("===========Game UI Content===========")]
     [SerializeField] GameObject pauseMenu;
     [Space(10)]
-    [SerializeField] GameObject resultsMenu;
-    [SerializeField] GameObject[] resultTitles; // 0 = Game Over, 1 = Win
+    [SerializeField] GameObject resultsScreen;
+    [SerializeField] GameObject[] resultTitles; // 0 = BlownUp, 1 = Killed, 2 = Escaped 
+    [SerializeField] Image resultsBackground;
+    [SerializeField] Sprite[] resultsBackgrounds; // 0 = BlownUp, 1 = Killed, 2 = Escaped 
     [Space(10)]
     [SerializeField] GameObject settingsMenu;
 
@@ -38,8 +47,6 @@ public class Player_Game_UI_Manager : MonoBehaviour // By Samuel White
     [Header("===========Game UI Content===========")]
     [SerializeField] GameObject pause_resumeButton;
     [Space(10)]
-    [SerializeField] GameObject results_NextLevel;
-    [SerializeField] GameObject results_RestartGameButton;
     [SerializeField] GameObject results_MainMenuButton;
 
     [Space(10)]
@@ -56,19 +63,12 @@ public class Player_Game_UI_Manager : MonoBehaviour // By Samuel White
     }
 
     private int playerNum; // The Player Number who currently has the UI open
+    private Coroutine coroutine;
 
     void Awake()
     {
         if (instance == null) instance = this;
         ResetGameUI();
-    }
-
-    private void Update()
-    {
-        if (GameData.isGameStarted) // Update when the game has started
-        {
-            UpdateUI();
-        }
     }
 
     #region Update Player UI
@@ -80,20 +80,55 @@ public class Player_Game_UI_Manager : MonoBehaviour // By Samuel White
         {
             // Update Player Health bar here (if applicable)
 
-            // vvvvvvvvvvvvvvvvv
-            // float minHealth = GameManager.playerData[i].characterData.playerHealth.health;
-            // float maxHealth = GameManager.playerData[i].characterData.playerHealth.maxHealth;
-            // playerHealthBars[i].fillAmount = minHealth / maxHealth;
-            // if (minHealth <= 0) playerHealthBars[i].fillAmount = 0f;
-            // ^^^^^^^^^^^^^^^^^
-
-            playerScoreTexts[i].text = $"P{i + 1} Score: {GameManager.playerData[i].score}"; // <<< Updates player score text (if applicable)
+            float minHealth = GameManager.playerData[i].playerController.Health;
+            float maxHealth = GameManager.playerData[i].playerController.MaxHealth;
+            playerHealthBars[i].fillAmount = minHealth / maxHealth;
+            if (minHealth <= 0) playerHealthBars[i].fillAmount = 0f;
         }
     }
     #endregion
 
-    #region Show Menus
+    #region Damage Event
+    public void DamageFlashEvent(float time = .25f)
+    {
+        UpdateUI();
+        coroutine = StartCoroutine(DamageFlash(time));
+    }
 
+    IEnumerator DamageFlash(float time)
+    {
+        float t = 0;
+        while (t < 1)
+        {
+            damageFlashImage.color = Color.Lerp(startColor, endColor, t);
+            t += Global_Game_Speed.GetDeltaTime() / time;
+            yield return null;
+        }
+        damageFlashImage.color = endColor;
+        yield break;
+    }
+    #endregion
+
+    #region Explosion Event
+
+    public IEnumerator ExplosionFlash(float time = .5f)
+    {
+        float t = 0;
+        if(coroutine != null)
+            StopCoroutine(coroutine);
+
+        while (t < 1)
+        {
+            damageFlashImage.color = Color.Lerp(explosionStartColor, explosionEndColor, t);
+            t += Global_Game_Speed.GetDeltaTime() / time;
+            yield return null;
+        }
+        damageFlashImage.color = explosionEndColor;
+        yield break;
+    }
+    #endregion
+
+    #region Show Menus
     public void UI_ShowPauseMenu(bool show)
     {
         settingsMenu.SetActive(false);
@@ -112,69 +147,14 @@ public class Player_Game_UI_Manager : MonoBehaviour // By Samuel White
         AudioManager.UpdateMusic(show ? AudioManager.MusicOptions.Pause : AudioManager.MusicOptions.Resume);
     }
 
-    // public void ShowResultsMenu(bool show) // <<<< Show a Results Menu (if necessary)
-    // {
-    //     resultsMenu.SetActive(show);
-    //     foreach (var item in GameData.playerInputs)
-    //     {
-    //         item.SwitchCurrentActionMap(show ? "UI" : "Player");
-    //     }
-    //     if (show)
-    //     {
-    //         GameData.canPause = false;
-
-    //         if (GameData.isGameOver)
-    //         {
-    //             resultTitles[0].SetActive(true);
-    //             GameManager.instance.EventSystem_SelectUIButton(results_RestartGameButton);
-    //         }
-    //         else
-    //         {
-    //             resultTitles[1].SetActive(true);
-    //             GameManager.instance.EventSystem_SelectUIButton(results_NextLevel);
-    //         }
-
-    //         if (GameData.isMultiplayer) // Show Player 2 stats if Multiplayer is enabled
-    //         {
-    //             for (int i = 0; i < playerTwoStats.Length; i++)
-    //             {
-    //                 playerTwoStats[i].SetActive(true); // Show Player 2 stats
-    //             }
-    //             for (int i = 0; i < playerStats.Length; i++)
-    //             {
-    //                 playerStats[i].Kills.text = GameManager.playerData[i].kills.ToString();
-    //                 playerStats[i].Lives.text = GameManager.playerData[i].lives.ToString();
-    //                 playerStats[i].Score.text = GameManager.playerData[i].score.ToString();
-    //             }
-    //         }
-    //         else
-    //         {
-    //             for (int i = 0; i < playerTwoStats.Length; i++)
-    //             {
-    //                 playerTwoStats[i].SetActive(false); // Hide Player 2 stats
-    //             }
-    //             playerStats[0].Kills.text = GameManager.playerData[0].kills.ToString();
-    //             playerStats[0].Lives.text = GameManager.playerData[0].lives.ToString();
-    //             playerStats[0].Score.text = GameManager.playerData[0].score.ToString();
-    //         }
-    //         if (GameData.currentLevel == Scene_Loader_Transition.SceneNames.Level_3) // TODO Change when more levels are added in the future
-    //         {
-    //             results_RestartGameButton.SetActive(false);
-    //             results_NextLevel.SetActive(false);
-    //             results_MainMenuButton.SetActive(true);
-    //             GameManager.instance.EventSystem_SelectUIButton(results_MainMenuButton);
-    //         }
-    //     }
-    //     else
-    //     {
-    //         GameManager.instance.EventSystem_SelectUIButton(null);
-    //         GameManager.instance.PauseGame(false);
-    //         foreach (var title in resultTitles) // Hide all titles
-    //         {
-    //             title.SetActive(false);
-    //         }
-    //     }
-    // }
+    public enum GameOverEvent { BlownUp, Killed, Escaped }
+    public void ShowEndScreen(GameOverEvent gameOverEvent)
+    {
+        resultsBackground.sprite = resultsBackgrounds[(int)gameOverEvent];
+        resultsScreen.SetActive(true);
+        GameManager.instance.Player_ChangeActionMap(false, 0, "UI");
+        GameManager.instance.EventSystem_SelectUIButton(results_MainMenuButton);
+    }
     #endregion
 
     public void ShowSettings(bool show)

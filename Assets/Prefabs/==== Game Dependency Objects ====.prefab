@@ -77,12 +77,13 @@ AudioSource:
   m_GameObject: {fileID: 744576099588517613}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2924282070372250696, guid: 0fc1ab514373e45e693930a498f803a1,
+    type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -216,8 +217,9 @@ MonoBehaviour:
   defaultGameSpeed: 1
   defaultPlayerAutoShoot: 0
   defaultEnableParticles: 1
-  DefaultPlayerInvicible: 0
+  defaultPlayerInvicible: 0
   defaultDamageFlashIntensity: 1
+  cursorSensitivity: 1
 --- !u!1 &1502479096064722174
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,9 +354,10 @@ AudioSource:
   m_GameObject: {fileID: 1689765646118155572}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 1939595497911451299, guid: 0fc1ab514373e45e693930a498f803a1,
+    type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -480,9 +483,10 @@ AudioSource:
   m_GameObject: {fileID: 1990101584280963813}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -6703679331488052936, guid: 0fc1ab514373e45e693930a498f803a1,
+    type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -625,7 +629,13 @@ MonoBehaviour:
     - listName: Took_Damage
       playerSoundType: 0
       sounds: []
-    - listName: Attacked
+    - listName: Key_Collected
+      playerSoundType: 0
+      sounds: []
+    - listName: Gate_Key_Collected
+      playerSoundType: 0
+      sounds: []
+    - listName: Gate_Opened
       playerSoundType: 0
       sounds: []
   enemyCategory:
@@ -635,7 +645,13 @@ MonoBehaviour:
     - listName: Enemy_Attack
       enemySoundType: 0
       sounds: []
-    - listName: Enemy_Defeated
+    - listName: Enemy_Jumpscare
+      enemySoundType: 0
+      sounds: []
+    - listName: Enemy_Step
+      enemySoundType: 0
+      sounds: []
+    - listName: Enemy_Alert
       enemySoundType: 0
       sounds: []
   interfaceCategory:
@@ -674,10 +690,10 @@ MonoBehaviour:
       music: {fileID: 0}
     - listName: 
       musicType: 1
-      music: {fileID: 0}
+      music: {fileID: 8300000, guid: f81dc2bfa954b41dd9e0c276fb01b530, type: 3}
     - listName: 
       musicType: 2
-      music: {fileID: 0}
+      music: {fileID: 8300000, guid: 183e2afb8bc894bf6bdd9dfc9aa00c4c, type: 3}
     - listName: 
       musicType: 3
       music: {fileID: 0}
@@ -918,9 +934,10 @@ AudioSource:
   m_GameObject: {fileID: 5719372292682747426}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 103225876046007641, guid: 0fc1ab514373e45e693930a498f803a1,
+    type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
