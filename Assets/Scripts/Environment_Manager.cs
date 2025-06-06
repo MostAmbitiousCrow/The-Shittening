@@ -11,7 +11,7 @@ public class Environment_Manager : MonoBehaviour
     [SerializeField] Transform keysFolder;
     [SerializeField] List<Transform> keySpawns;
     [Space(10)]
-    [SerializeField] GameObject KeyPrefab;
+    [SerializeField] GameObject[] KeyPrefabs;
 
     private void Awake()
     {
@@ -35,19 +35,13 @@ public class Environment_Manager : MonoBehaviour
 
     public void SpawnKeys()
     {
-        if (KeyPrefab == null || keySpawns.Count == 0)
-        {
-            Debug.LogWarning("KeyPrefab or keySpawns is not set.");
-            return;
-        }
-
         List<Transform> availableSpawns = new(keySpawns);
 
-        for (int i = 0; i < keySpawns.Count; i++)
+        for (int i = 0; i < KeyPrefabs.Length; i++)
         {
             if (availableSpawns.Count == 0) break;
             int spawnNum = Random.Range(0, availableSpawns.Count);
-            GameObject key = Instantiate(KeyPrefab, availableSpawns[spawnNum].position, Quaternion.identity);
+            GameObject key = Instantiate(KeyPrefabs[i], availableSpawns[spawnNum].position, Quaternion.identity);
             key.transform.SetParent(keysFolder);
             key.name = "Key" + i;
             availableSpawns.RemoveAt(spawnNum);

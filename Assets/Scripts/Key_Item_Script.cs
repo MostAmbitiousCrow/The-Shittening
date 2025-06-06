@@ -4,6 +4,7 @@ public class Key_Item_Script : MonoBehaviour
 {
     [SerializeField] Transform spriteT;
     [SerializeField] bool isGateKey;
+    [SerializeField] int key;
     
     void Update()
     {
@@ -34,7 +35,7 @@ public class Key_Item_Script : MonoBehaviour
                 Game_Events_Manager.instance.GiveKey();
                 Game_Events_Manager.instance.enemyScript.UpdateStage();
                 AudioManager.PlayPlayerSound(PlayerCategory.PlayerSoundTypes.Key_Collected);
-                GameManager.playerData[0].playerController.UpdateBomb(60);
+                GameManager.playerData[0].playerController.UpdateBomb(60, key, true);
             }
             // Destroy the key item
             Destroy(gameObject);

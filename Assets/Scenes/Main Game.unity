@@ -11883,8 +11883,11 @@ MonoBehaviour:
   - {fileID: 235784635}
   - {fileID: 155277544}
   - {fileID: 1914214189}
-  KeyPrefab: {fileID: 5813695108344336651, guid: ee233ae18e8e749a3a1d3ff5c268a904,
-    type: 3}
+  KeyPrefabs:
+  - {fileID: 2942438049022855144, guid: c495b65a998044971be315e8d138a5fd, type: 3}
+  - {fileID: 7861996756827079807, guid: 0f9ea0cad1eb04f9faa15cb98aa10a9d, type: 3}
+  - {fileID: 3569982821724001974, guid: c508a072b1e8a4a88ab99e1fd7279de7, type: 3}
+  - {fileID: 8331671368941050627, guid: 143820587e002442ebccc8ce39ca1358, type: 3}
 --- !u!1 &1685867781
 GameObject:
   m_ObjectHideFlags: 0

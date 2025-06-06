@@ -48,11 +48,11 @@ public class Game_Events_Manager : MonoBehaviour
         gameTime = maxGameTime;
         while (gameTime > 0)
         {
-            GameManager.playerData[0].playerController.UpdateBomb(gameTime);
+            GameManager.playerData[0].playerController.UpdateBomb(gameTime, 0);
             gameTime -= Global_Game_Speed.GetDeltaTime();
             yield return null;
         }
-        GameManager.playerData[0].playerController.UpdateBomb(0);
+        GameManager.playerData[0].playerController.UpdateBomb(0, 0);
         PlayerBlowUp();
     }
 

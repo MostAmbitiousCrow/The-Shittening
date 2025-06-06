@@ -31,6 +31,8 @@ public class Player_Controller : MonoBehaviour
     [Space(10)]
     [SerializeField] Vector3 timerViewRotation = new();
     [SerializeField] Vector3 keyViewRotation = new(0, 180, 0);
+    [Space(10)]
+    [SerializeField] GameObject[] bombKeys;
 
     [Header("Health")]
     [SerializeField] float damageFlashTime = .25f;
@@ -205,7 +207,7 @@ public class Player_Controller : MonoBehaviour
     #endregion
 
     #region Bomb Timer
-    public void UpdateBomb(float time)
+    public void UpdateBomb(float time, int key, bool isKey = false)
     {
         // Clamp to non-negative
         time = Mathf.Max(0, time);
@@ -216,6 +218,9 @@ public class Player_Controller : MonoBehaviour
 
         // Format as analog-like string
         bombText.text = $"{minutes:00}:{seconds:00}";
+
+        if(isKey)
+            bombKeys[key].SetActive(true);
     }
     #endregion
 
