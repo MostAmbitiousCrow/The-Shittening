@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f02b267a73f9c974994361a0ed70b34e
+guid: 4501f0b3f295d6948b503eb9dc854dab
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,7 +7,7 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Wall_Tag
+      name: L_Corner_Skin
     second: {fileID: 2100000, guid: 7d515fb0af184194b9a87f437c0e3ccf, type: 2}
   materials:
     materialImportMode: 2
