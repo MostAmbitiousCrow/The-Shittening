@@ -631,16 +631,19 @@ MonoBehaviour:
       sounds: []
     - listName: Key_Collected
       playerSoundType: 2
-      sounds: []
+      sounds:
+      - {fileID: 8300000, guid: 8b363d534845f994ca2a99d18ba564a3, type: 3}
     - listName: Gate_Key_Collected
       playerSoundType: 3
-      sounds: []
+      sounds:
+      - {fileID: 8300000, guid: 8b363d534845f994ca2a99d18ba564a3, type: 3}
     - listName: Gate_Opened
       playerSoundType: 4
       sounds: []
     - listName: Bomb_Explode
       playerSoundType: 5
-      sounds: []
+      sounds:
+      - {fileID: 8300000, guid: 32c5e059695922945b97c285ac10c93b, type: 3}
   enemyCategory:
     categoryName: 
     audioSource: {fileID: 8232649333457804935}
@@ -650,7 +653,8 @@ MonoBehaviour:
       sounds: []
     - listName: Enemy_Jumpscare
       enemySoundType: 1
-      sounds: []
+      sounds:
+      - {fileID: 8300000, guid: 3727a9a6b14748f41b0e2c3cfb503a25, type: 3}
     - listName: Enemy_Step
       enemySoundType: 2
       sounds: []
@@ -690,7 +694,7 @@ MonoBehaviour:
     soundList:
     - listName: 
       musicType: 0
-      music: {fileID: 0}
+      music: {fileID: 8300000, guid: b901a1954d26304429ed29e03bfd58ff, type: 3}
     - listName: 
       musicType: 1
       music: {fileID: 8300000, guid: f81dc2bfa954b41dd9e0c276fb01b530, type: 3}
