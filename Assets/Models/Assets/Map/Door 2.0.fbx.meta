@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: 2ccb7a8c5799abe48b8d8af254920979
+guid: ab537e752cd16644b9c56430abd9a047
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Door_Tag
+    second: {fileID: 2100000, guid: 56db176be755a9d4886df4f3f6baf8b0, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

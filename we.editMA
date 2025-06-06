@@ -1,0 +1,258 @@
+//Maya ASCII 2023 scene
+//Name: we.editMA
+//Last modified: Thu, Jun 05, 2025 11:50:17 PM
+//Codeset: 1252
+requires maya "2023";
+requires -nodeType "aiOptions" -nodeType "aiAOVDriver" -nodeType "aiAOVFilter" -nodeType "aiPhysicalSky"
+		 "mtoa" "5.2.1.1";
+currentUnit -l centimeter -a degree -t film;
+fileInfo "fileCreationSource" "ExportEdits";
+createNode standardSurface -n "L_Corner_Skin";
+	rename -uid "1FB2DE80-4F4C-AC1A-6F80-A894DD4F3037";
+createNode shadingEngine -n "standardSurface8SG";
+	rename -uid "E6328E74-4602-293E-1A60-DC93FD4D50C5";
+	setAttr ".ihi" 0;
+	setAttr -s 2 ".dsm";
+	setAttr ".ro" yes;
+createNode materialInfo -n "materialInfo7";
+	rename -uid "18A7A10D-441C-6E09-3802-79B446BB3531";
+createNode materialInfo -n "materialInfo22";
+	rename -uid "6EA18CC6-42EC-266B-6F27-F8AB25C3F9B9";
+createNode file -n "file4";
+	rename -uid "F609DC70-49B2-BC75-2A69-39A686763AB3";
+	setAttr ".ail" yes;
+	setAttr ".ftn" -type "string" "C:/Users/Sergio/Desktop/Environment Textures/Maintenance Tunnels_L_Corner_Skin_Normal.png";
+	setAttr ".cs" -type "string" "Raw";
+createNode file -n "file1";
+	rename -uid "220CA8C6-4159-D4E5-D8B6-DC853878A7D6";
+	setAttr ".ail" yes;
+	setAttr ".ftn" -type "string" "C:/Users/Sergio/Desktop/Environment Textures/Maintenance Tunnels_L_Corner_Skin_BaseColor.png";
+	setAttr ".cs" -type "string" "sRGB";
+createNode file -n "file3";
+	rename -uid "BA65F469-4FA6-0177-0624-E3A20006A23F";
+	setAttr ".ail" yes;
+	setAttr ".ftn" -type "string" "C:/Users/Sergio/Desktop/Environment Textures/Maintenance Tunnels_L_Corner_Skin_Roughness.png";
+	setAttr ".cs" -type "string" "Raw";
+createNode file -n "file2";
+	rename -uid "662B2517-4D1E-8AA1-DCF7-9AB37185E16C";
+	setAttr ".ail" yes;
+	setAttr ".ftn" -type "string" "C:/Users/Sergio/Desktop/Environment Textures/Maintenance Tunnels_L_Corner_Skin_Roughness.png";
+	setAttr ".cs" -type "string" "Raw";
+createNode file -n "Maintenance_Tunnels_L_Corner_Skin_Height_1";
+	rename -uid "36BEDE3A-4FEC-569F-E443-D2A69A062D39";
+	setAttr ".ail" yes;
+	setAttr ".ftn" -type "string" "D:/Downloads/Environment Textures-20250605T221240Z-1-001/Environment Textures/Maintenance Tunnels_L_Corner_Skin_Height.png";
+	setAttr ".cs" -type "string" "sRGB";
+createNode place2dTexture -n "place2dTexture1";
+	rename -uid "36B6DAB8-437C-EE5A-F926-76ACF5768913";
+createNode displacementShader -n "displacementShader1";
+	rename -uid "9CFC453B-4C51-01D7-D5D6-D4AC4BC9C878";
+createNode shadingEngine -n "displacementShader1SG";
+	rename -uid "83AE9595-4AE4-EEE4-4F24-69B28D92A45B";
+	setAttr ".ihi" 0;
+	setAttr ".ro" yes;
+createNode place2dTexture -n "place2dTexture5";
+	rename -uid "89F304C1-4106-3435-CEC9-0594A8CEEC89";
+createNode place2dTexture -n "place2dTexture4";
+	rename -uid "A2452089-4C05-30F0-50FF-F783122C44AC";
+createNode place2dTexture -n "place2dTexture3";
+	rename -uid "02DB1F9B-4B59-CA03-8DC1-E7BDA49FE9B0";
+createNode bump2d -n "bump2d1";
+	rename -uid "2B1466E8-47D8-33CC-C0B3-EEBEE7105964";
+	setAttr ".vc1" -type "float3" 0 3.9999999e-05 0 ;
+	setAttr ".vc2" -type "float3" 9.9999997e-06 9.9999997e-06 0 ;
+createNode place2dTexture -n "place2dTexture2";
+	rename -uid "93EFE91C-42B5-CCA7-9AED-45A228950753";
+connectAttr "L_Corner_Skin.oc" "standardSurface8SG.ss";
+connectAttr "L_Corner_Skin.msg" "materialInfo7.m";
+connectAttr "L_Corner_Skin.msg" ":defaultShaderList1.s" -na;
+connectAttr "L_Corner_Skin.msg" "materialInfo7.t" -na;
+connectAttr "L_Corner_Skin.msg" "<main>:hyperShadePrimaryNodeEditorSavedTabsInfo.tgi[0].ni[11].dn"
+		;
+relationship "shadowLink" ":lightLinker1" "standardSurface8SG.message" ":defaultLightSet.message";
+relationship "link" ":lightLinker1" "standardSurface8SG.message" ":defaultLightSet.message";
+connectAttr "standardSurface8SG.msg" "materialInfo7.sg";
+connectAttr "standardSurface8SG.msg" "<main>:hyperShadePrimaryNodeEditorSavedTabsInfo.tgi[0].ni[3].dn"
+		;
+connectAttr "<main>:Corner_2x2Shape.iog" "standardSurface8SG.dsm" -na;
+connectAttr "standardSurface8SG.pa" ":renderPartition.st" -na;
+connectAttr ":defaultColorMgtGlobals.cme" "file4.cme";
+connectAttr ":defaultColorMgtGlobals.cfe" "file4.cmcf";
+connectAttr ":defaultColorMgtGlobals.cfp" "file4.cmcp";
+connectAttr ":defaultColorMgtGlobals.wsn" "file4.ws";
+connectAttr "file4.msg" "<main>:hyperShadePrimaryNodeEditorSavedTabsInfo.tgi[0].ni[31].dn"
+		;
+connectAttr "file4.msg" ":defaultTextureList1.tx" -na;
+connectAttr "file4.oa" "bump2d1.bv";
+connectAttr ":defaultColorMgtGlobals.cme" "file1.cme";
+connectAttr ":defaultColorMgtGlobals.cfe" "file1.cmcf";
+connectAttr ":defaultColorMgtGlobals.cfp" "file1.cmcp";
+connectAttr ":defaultColorMgtGlobals.wsn" "file1.ws";
+connectAttr "file1.msg" "<main>:hyperShadePrimaryNodeEditorSavedTabsInfo.tgi[0].ni[40].dn"
+		;
+connectAttr "file1.msg" ":defaultTextureList1.tx" -na;
+connectAttr "file1.oc" "L_Corner_Skin.bc";
+connectAttr ":defaultColorMgtGlobals.cme" "file3.cme";
+connectAttr ":defaultColorMgtGlobals.cfe" "file3.cmcf";
+connectAttr ":defaultColorMgtGlobals.cfp" "file3.cmcp";
+connectAttr ":defaultColorMgtGlobals.wsn" "file3.ws";
+connectAttr "file3.msg" "<main>:hyperShadePrimaryNodeEditorSavedTabsInfo.tgi[0].ni[34].dn"
+		;
+connectAttr "file3.msg" ":defaultTextureList1.tx" -na;
+connectAttr "file3.oa" "L_Corner_Skin.m";
+connectAttr ":defaultColorMgtGlobals.cme" "file2.cme";
+connectAttr ":defaultColorMgtGlobals.cfe" "file2.cmcf";
+connectAttr ":defaultColorMgtGlobals.cfp" "file2.cmcp";
+connectAttr ":defaultColorMgtGlobals.wsn" "file2.ws";
+connectAttr "file2.msg" "<main>:hyperShadePrimaryNodeEditorSavedTabsInfo.tgi[0].ni[42].dn"
+		;
+connectAttr "file2.msg" ":defaultTextureList1.tx" -na;
+connectAttr "file2.oa" "L_Corner_Skin.dr";
+connectAttr ":defaultColorMgtGlobals.cme" "Maintenance_Tunnels_L_Corner_Skin_Height_1.cme"
+		;
+connectAttr ":defaultColorMgtGlobals.cfe" "Maintenance_Tunnels_L_Corner_Skin_Height_1.cmcf"
+		;
+connectAttr ":defaultColorMgtGlobals.cfp" "Maintenance_Tunnels_L_Corner_Skin_Height_1.cmcp"
+		;
+connectAttr ":defaultColorMgtGlobals.wsn" "Maintenance_Tunnels_L_Corner_Skin_Height_1.ws"
+		;
+connectAttr "Maintenance_Tunnels_L_Corner_Skin_Height_1.msg" "<main>:hyperShadePrimaryNodeEditorSavedTabsInfo.tgi[0].ni[37].dn"
+		;
+connectAttr "Maintenance_Tunnels_L_Corner_Skin_Height_1.msg" ":defaultTextureList1.tx"
+		 -na;
+connectAttr "Maintenance_Tunnels_L_Corner_Skin_Height_1.oa" "displacementShader1.d"
+		;
+connectAttr "place2dTexture1.msg" "<main>:hyperShadePrimaryNodeEditorSavedTabsInfo.tgi[0].ni[39].dn"
+		;
+connectAttr "place2dTexture1.msg" ":defaultRenderUtilityList1.u" -na;
+connectAttr "place2dTexture1.c" "file1.c";
+connectAttr "place2dTexture1.tf" "file1.tf";
+connectAttr "place2dTexture1.rf" "file1.rf";
+connectAttr "place2dTexture1.mu" "file1.mu";
+connectAttr "place2dTexture1.mv" "file1.mv";
+connectAttr "place2dTexture1.s" "file1.s";
+connectAttr "place2dTexture1.wu" "file1.wu";
+connectAttr "place2dTexture1.wv" "file1.wv";
+connectAttr "place2dTexture1.re" "file1.re";
+connectAttr "place2dTexture1.of" "file1.of";
+connectAttr "place2dTexture1.r" "file1.ro";
+connectAttr "place2dTexture1.n" "file1.n";
+connectAttr "place2dTexture1.vt1" "file1.vt1";
+connectAttr "place2dTexture1.vt2" "file1.vt2";
+connectAttr "place2dTexture1.vt3" "file1.vt3";
+connectAttr "place2dTexture1.vc1" "file1.vc1";
+connectAttr "place2dTexture1.o" "file1.uv";
+connectAttr "place2dTexture1.ofs" "file1.fs";
+connectAttr "displacementShader1.msg" "<main>:hyperShadePrimaryNodeEditorSavedTabsInfo.tgi[0].ni[38].dn"
+		;
+connectAttr "displacementShader1.msg" ":defaultShaderList1.s" -na;
+connectAttr "displacementShader1.d" "displacementShader1SG.ds";
+relationship "link" ":lightLinker1" "displacementShader1SG.message" ":defaultLightSet.message";
+connectAttr "displacementShader1SG.msg" "materialInfo22.sg";
+relationship "shadowLink" ":lightLinker1" "displacementShader1SG.message" ":defaultLightSet.message";
+connectAttr "displacementShader1SG.msg" "<main>:hyperShadePrimaryNodeEditorSavedTabsInfo.tgi[0].ni[41].dn"
+		;
+connectAttr "displacementShader1SG.pa" ":renderPartition.st" -na;
+connectAttr "displacementShader1SG.ds" "standardSurface8SG.ds";
+connectAttr "place2dTexture5.msg" "<main>:hyperShadePrimaryNodeEditorSavedTabsInfo.tgi[0].ni[36].dn"
+		;
+connectAttr "place2dTexture5.msg" ":defaultRenderUtilityList1.u" -na;
+connectAttr "place2dTexture5.c" "Maintenance_Tunnels_L_Corner_Skin_Height_1.c";
+connectAttr "place2dTexture5.tf" "Maintenance_Tunnels_L_Corner_Skin_Height_1.tf"
+		;
+connectAttr "place2dTexture5.rf" "Maintenance_Tunnels_L_Corner_Skin_Height_1.rf"
+		;
+connectAttr "place2dTexture5.mu" "Maintenance_Tunnels_L_Corner_Skin_Height_1.mu"
+		;
+connectAttr "place2dTexture5.mv" "Maintenance_Tunnels_L_Corner_Skin_Height_1.mv"
+		;
+connectAttr "place2dTexture5.s" "Maintenance_Tunnels_L_Corner_Skin_Height_1.s";
+connectAttr "place2dTexture5.wu" "Maintenance_Tunnels_L_Corner_Skin_Height_1.wu"
+		;
+connectAttr "place2dTexture5.wv" "Maintenance_Tunnels_L_Corner_Skin_Height_1.wv"
+		;
+connectAttr "place2dTexture5.re" "Maintenance_Tunnels_L_Corner_Skin_Height_1.re"
+		;
+connectAttr "place2dTexture5.of" "Maintenance_Tunnels_L_Corner_Skin_Height_1.of"
+		;
+connectAttr "place2dTexture5.r" "Maintenance_Tunnels_L_Corner_Skin_Height_1.ro";
+connectAttr "place2dTexture5.n" "Maintenance_Tunnels_L_Corner_Skin_Height_1.n";
+connectAttr "place2dTexture5.vt1" "Maintenance_Tunnels_L_Corner_Skin_Height_1.vt1"
+		;
+connectAttr "place2dTexture5.vt2" "Maintenance_Tunnels_L_Corner_Skin_Height_1.vt2"
+		;
+connectAttr "place2dTexture5.vt3" "Maintenance_Tunnels_L_Corner_Skin_Height_1.vt3"
+		;
+connectAttr "place2dTexture5.vc1" "Maintenance_Tunnels_L_Corner_Skin_Height_1.vc1"
+		;
+connectAttr "place2dTexture5.o" "Maintenance_Tunnels_L_Corner_Skin_Height_1.uv";
+connectAttr "place2dTexture5.ofs" "Maintenance_Tunnels_L_Corner_Skin_Height_1.fs"
+		;
+connectAttr "place2dTexture4.msg" "<main>:hyperShadePrimaryNodeEditorSavedTabsInfo.tgi[0].ni[32].dn"
+		;
+connectAttr "place2dTexture4.msg" ":defaultRenderUtilityList1.u" -na;
+connectAttr "place2dTexture4.c" "file4.c";
+connectAttr "place2dTexture4.tf" "file4.tf";
+connectAttr "place2dTexture4.rf" "file4.rf";
+connectAttr "place2dTexture4.mu" "file4.mu";
+connectAttr "place2dTexture4.mv" "file4.mv";
+connectAttr "place2dTexture4.s" "file4.s";
+connectAttr "place2dTexture4.wu" "file4.wu";
+connectAttr "place2dTexture4.wv" "file4.wv";
+connectAttr "place2dTexture4.re" "file4.re";
+connectAttr "place2dTexture4.of" "file4.of";
+connectAttr "place2dTexture4.r" "file4.ro";
+connectAttr "place2dTexture4.n" "file4.n";
+connectAttr "place2dTexture4.vt1" "file4.vt1";
+connectAttr "place2dTexture4.vt2" "file4.vt2";
+connectAttr "place2dTexture4.vt3" "file4.vt3";
+connectAttr "place2dTexture4.vc1" "file4.vc1";
+connectAttr "place2dTexture4.o" "file4.uv";
+connectAttr "place2dTexture4.ofs" "file4.fs";
+connectAttr "place2dTexture3.msg" "<main>:hyperShadePrimaryNodeEditorSavedTabsInfo.tgi[0].ni[33].dn"
+		;
+connectAttr "place2dTexture3.msg" ":defaultRenderUtilityList1.u" -na;
+connectAttr "place2dTexture3.c" "file3.c";
+connectAttr "place2dTexture3.tf" "file3.tf";
+connectAttr "place2dTexture3.rf" "file3.rf";
+connectAttr "place2dTexture3.mu" "file3.mu";
+connectAttr "place2dTexture3.mv" "file3.mv";
+connectAttr "place2dTexture3.s" "file3.s";
+connectAttr "place2dTexture3.wu" "file3.wu";
+connectAttr "place2dTexture3.wv" "file3.wv";
+connectAttr "place2dTexture3.re" "file3.re";
+connectAttr "place2dTexture3.of" "file3.of";
+connectAttr "place2dTexture3.r" "file3.ro";
+connectAttr "place2dTexture3.n" "file3.n";
+connectAttr "place2dTexture3.vt1" "file3.vt1";
+connectAttr "place2dTexture3.vt2" "file3.vt2";
+connectAttr "place2dTexture3.vt3" "file3.vt3";
+connectAttr "place2dTexture3.vc1" "file3.vc1";
+connectAttr "place2dTexture3.o" "file3.uv";
+connectAttr "place2dTexture3.ofs" "file3.fs";
+connectAttr "bump2d1.msg" "<main>:hyperShadePrimaryNodeEditorSavedTabsInfo.tgi[0].ni[30].dn"
+		;
+connectAttr "bump2d1.msg" ":defaultRenderUtilityList1.u" -na;
+connectAttr "bump2d1.o" "L_Corner_Skin.n";
+connectAttr "place2dTexture2.msg" "<main>:hyperShadePrimaryNodeEditorSavedTabsInfo.tgi[0].ni[43].dn"
+		;
+connectAttr "place2dTexture2.msg" ":defaultRenderUtilityList1.u" -na;
+connectAttr "place2dTexture2.c" "file2.c";
+connectAttr "place2dTexture2.tf" "file2.tf";
+connectAttr "place2dTexture2.rf" "file2.rf";
+connectAttr "place2dTexture2.mu" "file2.mu";
+connectAttr "place2dTexture2.mv" "file2.mv";
+connectAttr "place2dTexture2.s" "file2.s";
+connectAttr "place2dTexture2.wu" "file2.wu";
+connectAttr "place2dTexture2.wv" "file2.wv";
+connectAttr "place2dTexture2.re" "file2.re";
+connectAttr "place2dTexture2.of" "file2.of";
+connectAttr "place2dTexture2.r" "file2.ro";
+connectAttr "place2dTexture2.n" "file2.n";
+connectAttr "place2dTexture2.vt1" "file2.vt1";
+connectAttr "place2dTexture2.vt2" "file2.vt2";
+connectAttr "place2dTexture2.vt3" "file2.vt3";
+connectAttr "place2dTexture2.vc1" "file2.vc1";
+connectAttr "place2dTexture2.o" "file2.uv";
+connectAttr "place2dTexture2.ofs" "file2.fs";
+// End of we.editMA
