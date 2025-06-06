@@ -62,9 +62,4 @@ public class Game_Events_Manager : MonoBehaviour
         StartCoroutine(Player_Game_UI_Manager.instance.ExplosionFlash());
         AudioManager.PlayPlayerSound(PlayerCategory.PlayerSoundTypes.Bomb_Explode);
     }
-
-    public void SetPlayerSpawn()
-    {
-        GameManager.playerData[0].playerTransform.position = playerSpawnPoint.position;
-    }
 }

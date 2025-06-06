@@ -29,9 +29,6 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] Transform bomb;
     [SerializeField] float animationTime = .75f;
     [Space(10)]
-    [SerializeField] Vector3 openedRotation = new(65, 0);
-    [SerializeField] Vector3 closedRotation = new(0, 0);
-    [Space(10)]
     [SerializeField] Vector3 timerViewRotation = new();
     [SerializeField] Vector3 keyViewRotation = new(0, 180, 0);
 
@@ -45,6 +42,14 @@ public class Player_Controller : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         playerNumber = playerInput.playerIndex;
         Health = MaxHealth;
+    }
+
+    public void UpdateSpawn(Vector3 vector)
+    {
+        rb.velocity = new();
+        transform.position = GameManager.playerData[0].playerTransform.position = vector;
+        Debug.Log(vector);
+        Debug.Log(transform.position);
     }
 
     public void LockCursor(bool state)
