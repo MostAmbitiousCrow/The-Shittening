@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Settings_Menu_Manager : MonoBehaviour // By Samuel White
 {
@@ -31,7 +32,7 @@ public class Settings_Menu_Manager : MonoBehaviour // By Samuel White
         public Slider slider;
         public TextMeshProUGUI text;
     }
-    [SerializeField] private Toggle[] accessibilityToggles; // Auto Shoot = 0 | Player Invincible = 1 |
+    [SerializeField] private Toggle[] accessibilityToggles; // Player Invincible = 0
 
     [Header("Menus")]
     [SerializeField] MenuData[] menuDatas; // Main Menu = 0 | Settings Menu = 1| Volume = 2| Accessibility = 3 |
@@ -106,21 +107,29 @@ public class Settings_Menu_Manager : MonoBehaviour // By Samuel White
 
     // Accessibility Triggers
 
-    public void GameSpeedSlider()
+    //public void GameSpeedSlider()
+    //{
+    //    Settings_Manager.SetGameSpeed(Mathf.Clamp(accessibilitySliderDatas[0].slider.value / 10, .1f, 1f));
+    //    float v = accessibilitySliderDatas[0].slider.value / 10;
+    //    accessibilitySliderDatas[0].text.text = v.ToString();
+    //}
+
+    public void CursorSensitivitySlider()
     {
-        Settings_Manager.SetGameSpeed(Mathf.Clamp(accessibilitySliderDatas[0].slider.value / 10, .1f, 1f));
-        float v = accessibilitySliderDatas[0].slider.value / 10;
-        accessibilitySliderDatas[0].text.text = v.ToString();
+        float value = Mathf.Clamp(accessibilitySliderDatas[0].slider.value, .1f, 1);
+        Settings_Manager.SetCursorSensitivity(value);
+        value = Mathf.Round(value * 100) / 100;
+        accessibilitySliderDatas[0].text.text = value.ToString();
     }
 
-    public void AutoShoot()
-    {
-        Settings_Manager.SetPlayerAutoShoot(accessibilityToggles[0].isOn);
-    }
+    //public void AutoShoot()
+    //{
+    //    Settings_Manager.SetPlayerAutoShoot(accessibilityToggles[0].isOn);
+    //}
 
     public void PlayerInvincible()
     {
-        Settings_Manager.SetPlayerInvincibility(accessibilityToggles[1].isOn);
+        Settings_Manager.SetPlayerInvincibility(accessibilityToggles[0].isOn);
     }
 
     // ============================= Other Stuff =============================
@@ -142,9 +151,13 @@ public class Settings_Menu_Manager : MonoBehaviour // By Samuel White
         volumeSliderDatas[3].slider.value = (int)(Settings_Manager.playerVolume * 10);
         volumeSliderDatas[4].slider.value = (int)(Settings_Manager.interfaceVolume * 10);
 
-        accessibilitySliderDatas[0].slider.value = Mathf.Clamp((int)(Settings_Manager.gameSpeed * 10), 1f, 10f);
-        accessibilityToggles[0].isOn = Settings_Manager.playerAutoShoot;
-        accessibilityToggles[1].isOn = Settings_Manager.playerInvicible;
+        //accessibilitySliderDatas[0].slider.value = Mathf.Clamp((int)(Settings_Manager.gameSpeed * 10), 1f, 10f);
+        float value = Mathf.Round(Settings_Manager.cursorSensitivity * 100) / 100;
+        accessibilitySliderDatas[0].text.text = value.ToString();
+        accessibilitySliderDatas[0].slider.value = value;
+
+
+        accessibilityToggles[0].isOn = Settings_Manager.playerInvicible;
 
         for (int i = 0; i < volumeSliderDatas.Length; i++)
         {
@@ -178,7 +191,7 @@ public class Settings_Menu_Manager : MonoBehaviour // By Samuel White
         volumeSliderDatas[4].name = "Interface";
 
         accessibilitySliderDatas = new AccessibilitySliderData[1];
-        accessibilitySliderDatas[0].name = "Game Speed";
+        accessibilitySliderDatas[0].name = "Cursor Speed";
 
         menuDatas = new MenuData[4];
         menuDatas[0].name = "Main Menu";

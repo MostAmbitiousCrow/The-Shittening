@@ -122,8 +122,8 @@ public class Player_Controller : MonoBehaviour
         if (GameData.isPaused) return;
 
         // Mouse look
-        float mouseX = inputLook.x * playerSensitivity;
-        float mouseY = inputLook.y * playerSensitivity;
+        float mouseX = inputLook.x * Settings_Manager.cursorSensitivity;
+        float mouseY = inputLook.y * Settings_Manager.cursorSensitivity;
 
         // Horizontal rotation
         transform.Rotate(Vector3.up * mouseX);

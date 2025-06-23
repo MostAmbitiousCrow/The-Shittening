@@ -41,6 +41,7 @@ public class Settings_Manager : MonoBehaviour // By Samuel White
     public static bool useControllerMovement = true; // 0 = false, 1 = true
     public static bool useKeyboardMovement = true; // 0 = false, 1 = true
     public static bool useTouchMovement = true; // 0 = false, 1 = true
+    public static float cursorSensitivity = 1;
     
     // =========================================
     // Default Settings
@@ -61,7 +62,7 @@ public class Settings_Manager : MonoBehaviour // By Samuel White
     public bool defaultEnableParticles = true; // 0 = false, 1 = true
     public bool defaultPlayerInvicible = false;
     [Range(0, 1)] public float defaultDamageFlashIntensity = 1f;
-    public float cursorSensitivity = 1;
+    public float defaultCursorSensitivity = 1;
 
     // =========================================
 
@@ -83,8 +84,9 @@ public class Settings_Manager : MonoBehaviour // By Samuel White
             // Motor
             PlayerPrefs.SetInt("PlayerAutoShoot", playerAutoShoot ? 1 : 0); // 0 = false, 1 = true
             PlayerPrefs.SetFloat("GameSpeed", gameSpeed); // Global Gameplay Speed Multiplier. 1 = normal speed
-            // Other
-            PlayerPrefs.SetInt("PlayerInvincibility", playerInvicible ? 1 : 0);
+            PlayerPrefs.SetFloat("CursorSensitivity", cursorSensitivity); // Player Cursor Speed
+        // Other
+        PlayerPrefs.SetInt("PlayerInvincibility", playerInvicible ? 1 : 0);
 
         // // Save Gameplay Settings
         //     PlayerPrefs.SetInt("CursorMovement", cursorMovement ? 1 : 0); // 0 = false, 1 = true
@@ -110,6 +112,7 @@ public class Settings_Manager : MonoBehaviour // By Samuel White
             // Motor
             playerAutoShoot = PlayerPrefs.GetInt("PlayerAutoShoot", defaultPlayerAutoShoot ? 1 : 0) == 1; // 0 = false, 1 = true
             gameSpeed = PlayerPrefs.GetFloat("GameSpeed", defaultGameSpeed); // Global Gameplay Speed Multiplier. 1 = normal speed
+            cursorSensitivity = PlayerPrefs.GetFloat("CursorSensitivity");
             // Other
             PlayerPrefs.GetInt("PlayerInvincibility", defaultPlayerInvicible ? 1 : 0);
 
@@ -158,6 +161,11 @@ public class Settings_Manager : MonoBehaviour // By Samuel White
     // ========================================
     // Accessibility Control
 
+    public static void SetCursorSensitivity(float speed)
+    {
+        cursorSensitivity = speed;
+    }
+
     public static void SetPlayerAutoShoot(bool autoShoot)
     {
         playerAutoShoot = autoShoot;
@@ -186,6 +194,7 @@ public class Settings_Manager : MonoBehaviour // By Samuel White
         gameSpeed = instance.defaultGameSpeed;
         playerAutoShoot = instance.defaultPlayerAutoShoot;
         playerInvicible = instance.defaultPlayerInvicible;
+        cursorSensitivity = instance.defaultCursorSensitivity;
 
         SaveSettings();
     }
