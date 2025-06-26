@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 611629114385089447}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: MementoMoriBaseBomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 592288869653223360}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: ChargeCoreKey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +78,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1799232541688436909}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Bomb Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 5617193109214556895}
   - component: {fileID: 2352875689280485211}
   - component: {fileID: 7602007454140084126}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: ChargeCore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +194,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8220252156392299696}
   - component: {fileID: 4348857839589438484}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Audio Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -324,7 +324,7 @@ GameObject:
   - component: {fileID: 2480719128240814683}
   - component: {fileID: 3946607579461508584}
   - component: {fileID: 1574621366738933760}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -674,7 +674,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8744243955576955644}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Keys
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -731,37 +731,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4251306463753900802}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4266226185794094542
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5378769367068331895}
-  m_Layer: 6
-  m_Name: left
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5378769367068331895
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4266226185794094542}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 50.399284, y: 0.44123542, z: -0.089062236}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5254260822816666393}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4865932044804852072
 GameObject:
   m_ObjectHideFlags: 0
@@ -773,7 +742,7 @@ GameObject:
   - component: {fileID: 5245730142134260690}
   - component: {fileID: 9179259974675061879}
   - component: {fileID: 6379277514533447869}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: LogicKey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -823,7 +792,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 54072287badf77244ba3a54f22101274, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -854,7 +823,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5254260822816666393}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: IdentityKey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -875,7 +844,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1210607790866538983}
-  - {fileID: 5378769367068331895}
   - {fileID: 5141364524222264987}
   m_Father: {fileID: 8744243955576955644}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -890,7 +858,7 @@ GameObject:
   - component: {fileID: 403232611799476623}
   - component: {fileID: 4672737862135785179}
   - component: {fileID: 5821398282515639330}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1008,7 +976,7 @@ GameObject:
   - component: {fileID: 6535287580721919977}
   - component: {fileID: 7862681285963855948}
   - component: {fileID: 5402399467547413638}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: FuseKey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1091,7 +1059,7 @@ GameObject:
   - component: {fileID: 252076944711170884}
   - component: {fileID: 6069405410232455139}
   - component: {fileID: 5035221772759055949}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Cage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1174,7 +1142,7 @@ GameObject:
   - component: {fileID: 1210607790866538983}
   - component: {fileID: 1272831999505944227}
   - component: {fileID: 7551671024172899465}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1257,7 +1225,7 @@ GameObject:
   - component: {fileID: 5141364524222264987}
   - component: {fileID: 6172273512106494155}
   - component: {fileID: 9087709664753466359}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: pCylinder1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1340,7 +1308,7 @@ GameObject:
   - component: {fileID: 1952953332321270433}
   - component: {fileID: 861786585998202760}
   - component: {fileID: 6040706570817032768}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Timer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1567,7 +1535,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 31769a588c847483c9795e89760f5ba4,
         type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 31769a588c847483c9795e89760f5ba4,
         type: 3}
@@ -1577,12 +1545,12 @@ PrefabInstance:
     - target: {fileID: 1483761838162019399, guid: 31769a588c847483c9795e89760f5ba4,
         type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6209875214990744514, guid: 31769a588c847483c9795e89760f5ba4,
         type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

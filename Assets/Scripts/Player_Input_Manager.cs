@@ -14,7 +14,16 @@ public class Player_Input_Manager : MonoBehaviour
         playerInputManager.playerPrefab = playerPrefab;
     }
 
-    private void OnEnable()
+    public void CreatePlayerCharacter()
+    {
+        Instantiate(playerPrefab);
+    }
+    public void DestroyPlayerCharacter(int num = 0)
+    {
+        Destroy(GameManager.playerData[num].playerObject);
+    }
+
+    void OnEnable()
     {
         playerInputManager.onPlayerJoined += PlayerJoined;
         playerInputManager.onPlayerLeft += PlayerDisconnected;
@@ -55,7 +64,7 @@ public class Player_Input_Manager : MonoBehaviour
         Destroy(GameManager.playerData[input.playerIndex].playerObject);
         GameManager.playerData.RemoveAt(input.playerIndex);
 
-        UpdatePlayerEvents();
+        // UpdatePlayerEvents();
     }
 
     public void SetPlayerJoining(bool state)

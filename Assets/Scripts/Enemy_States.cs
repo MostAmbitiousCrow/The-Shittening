@@ -1,4 +1,3 @@
-using System.Data;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -25,10 +24,7 @@ public class Enemy_StateMachine : MonoBehaviour
     }
     public Enemy_States state;
 
-    enum Enemy_Stages
-    {
-        Stage_1, Stage_2, Stage_3, Stage_4
-    }
+    enum Enemy_Stages { Stage_1, Stage_2, Stage_3, Stage_4 }
     [SerializeField] Enemy_Stages stage;
     [Space(10)]
     public SpriteRenderer frontSR;
@@ -42,10 +38,7 @@ public class Enemy_StateMachine : MonoBehaviour
         chaseState = new ChaseState(this);
     }
 
-    void Start()
-    {
-        ChangeState(patrolState);
-    }
+    void Start() => ChangeState(patrolState);
 
     public void ChangeState(Enemy_State newState)
     {
@@ -164,7 +157,7 @@ public class PatrolState : Enemy_State
             stateMachine.meshAgent.destination = stateMachine.currentDestination.position;
             float dist = Vector3.Distance(stateMachine.transform.position, stateMachine.currentDestination.position);
             // Debug.Log($"Distance: {dist}");
-            if (dist < arrivalThreshold)
+            if (dist <= arrivalThreshold)
             {
                 stateMachine.animator.SetTrigger("Idle"); // Idle
                 delayTime += Global_Game_Speed.GetDeltaTime();

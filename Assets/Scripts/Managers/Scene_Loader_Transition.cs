@@ -84,6 +84,7 @@ public class Scene_Loader_Transition : MonoBehaviour // Made by Samuel White
             AudioManager.UpdateMusic(AudioManager.MusicOptions.Stop); // Stop Music
             AudioManager.LoadAudioData(false, AudioManager.AudioDataTypes.MainMenu_Sounds);
             AudioManager.LoadAudioData(true, AudioManager.AudioDataTypes.Gameplay_Sounds);
+            Player_Input_Manager.instance.DestroyPlayerCharacter();
         }
         else
         {

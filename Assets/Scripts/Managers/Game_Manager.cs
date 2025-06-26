@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour // By Samuel White
         GameData.isGameFinished = false;
         GameData.isPaused = false;
         GameData.canPause = true;
+        Player_Input_Manager.instance.CreatePlayerCharacter();
 
         AudioManager.PlayMusic(AudioManager.MusicOptions.Play, MusicCategory.MusicSoundTypes.AmbientMusic, 1);
         Time.timeScale = Settings_Manager.gameSpeed;

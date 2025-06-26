@@ -2,17 +2,23 @@ using UnityEngine;
 
 public class Escape_Door_Script : MonoBehaviour
 {
-    public BoxCollider doorTrigger;
+    [SerializeField] BoxCollider doorCollider;
+
+    [Header("Door")]
+    [SerializeField] Transform door;
+    [SerializeField] Vector3 doorClosePos;
+    [SerializeField] Vector3 doorOpenPos;
 
     public void ExitDoorState(bool state)
     {
-        doorTrigger.isTrigger = state;
-
+        doorCollider.enabled = state;
+        door.localPosition = state ? doorOpenPos : doorClosePos;
+        Player_Game_UI_Manager.instance.UpdateObjective("Escape!");
     }
     
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && GameData.gateKeyCollected)
+        if (other.CompareTag("Player"))
         {
             // Logic to open the door
             Debug.Log("Player has reached the exit door.");

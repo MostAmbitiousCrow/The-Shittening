@@ -27,6 +27,7 @@ public class Game_Events_Manager : MonoBehaviour
     {
         GameData.keysCollected++;
         Debug.Log("Key collected! Total keys: " + GameData.keysCollected);
+
         if (GameData.keysCollected >= GameData.maxKeys)
         {
             Debug.Log("All keys collected! Exit Door is Open.");
@@ -48,8 +49,12 @@ public class Game_Events_Manager : MonoBehaviour
         gameTime = maxGameTime;
         while (gameTime > 0)
         {
-            GameManager.playerData[0].playerController.UpdateBomb(gameTime, 0);
-            gameTime -= Global_Game_Speed.GetDeltaTime();
+            if (!GameData.isPaused)
+            {
+                gameTime -= Global_Game_Speed.GetDeltaTime();
+                GameManager.playerData[0].playerController.UpdateBomb(gameTime, 0);
+                if (!GameData.isGameStarted) yield break;
+            }
             yield return null;
         }
         GameManager.playerData[0].playerController.UpdateBomb(0, 0);

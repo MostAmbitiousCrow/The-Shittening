@@ -219,7 +219,7 @@ MonoBehaviour:
   defaultEnableParticles: 1
   defaultPlayerInvicible: 0
   defaultDamageFlashIntensity: 1
-  cursorSensitivity: 1
+  defaultCursorSensitivity: 1
 --- !u!1 &1502479096064722174
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,7 +268,7 @@ MonoBehaviour:
   m_NotificationBehavior: 3
   m_MaxPlayerCount: 1
   m_AllowJoining: 1
-  m_JoinBehavior: 0
+  m_JoinBehavior: 2
   m_PlayerJoinedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -767,7 +767,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &5814137140698950547
 MonoBehaviour:

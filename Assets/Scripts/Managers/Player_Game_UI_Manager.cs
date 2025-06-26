@@ -17,25 +17,19 @@ public class Player_Game_UI_Manager : MonoBehaviour // By Samuel White
 
     [Space(10)]
 
-    [SerializeField] Image[] playerHealthBars; // 0 = Player 1, 1 = Player 2
+    [SerializeField] Image playerHealthBar;
+    [SerializeField] TMP_Text objectiveText;
     [SerializeField] Image damageFlashImage;
     [SerializeField] Color startColor = Color.red;
     [SerializeField] Color endColor = Color.red;
     [Space(10)]
     [SerializeField] Color explosionStartColor = Color.yellow;
     [SerializeField] Color explosionEndColor = Color.black;
-    
-    [Space(10)]
-    
-    [SerializeField] GameObject[] playerTwoStats;
-
-    [Space(10)]
 
     [Header("===========Game UI Content===========")]
     [SerializeField] GameObject pauseMenu;
     [Space(10)]
     [SerializeField] GameObject resultsScreen;
-    [SerializeField] GameObject[] resultTitles; // 0 = BlownUp, 1 = Killed, 2 = Escaped 
     [SerializeField] Image resultsBackground;
     [SerializeField] Sprite[] resultsBackgrounds; // 0 = BlownUp, 1 = Killed, 2 = Escaped 
     [Space(10)]
@@ -53,15 +47,7 @@ public class Player_Game_UI_Manager : MonoBehaviour // By Samuel White
     [Header("===========Settings UI Content===========")]
     [SerializeField] GameObject settingsExitButton;
 
-    [Header("Player Stats")]
-    public PlayerStatContent[] playerStats = new PlayerStatContent[2]; // 0 = Player 1, 1 = Player 2
-    [System.Serializable]
-    public struct PlayerStatContent
-    {
-        public TextMeshProUGUI Kills, Lives, Time, Score;
-    }
 
-    private int playerNum; // The Player Number who currently has the UI open
     private Coroutine coroutine;
 
     void Awake()
@@ -74,16 +60,17 @@ public class Player_Game_UI_Manager : MonoBehaviour // By Samuel White
 
     public void UpdateUI()
     {
-        int count = Mathf.Min(playerHealthBars.Length, GameManager.playerData.Count);
-        for (int i = 0; i < count; i++)
-        {
-            // Update Player Health bar here (if applicable)
+       float minHealth = GameManager.playerData[0].playerController.Health;
+        float maxHealth = GameManager.playerData[0].playerController.MaxHealth;
+        playerHealthBar.fillAmount = minHealth / maxHealth;
+        if (minHealth <= 0) playerHealthBar.fillAmount = 0f;
+    }
+    #endregion
 
-            float minHealth = GameManager.playerData[i].playerController.Health;
-            float maxHealth = GameManager.playerData[i].playerController.MaxHealth;
-            playerHealthBars[i].fillAmount = minHealth / maxHealth;
-            if (minHealth <= 0) playerHealthBars[i].fillAmount = 0f;
-        }
+    #region Update Objective
+    public void UpdateObjective(string t)
+    {
+        objectiveText.text = t;
     }
     #endregion
 
@@ -131,17 +118,16 @@ public class Player_Game_UI_Manager : MonoBehaviour // By Samuel White
     public void UI_ShowPauseMenu(bool show)
     {
         settingsMenu.SetActive(false);
-        ShowPauseMenu(show, playerNum);
+        ShowPauseMenu(show, 0);
     }
 
     public void ShowPauseMenu(bool show, int pNum)
     {
-        playerNum = pNum;
-
         if (!GameData.canPause) return;
         pauseMenu.SetActive(show);
         GameManager.instance.PauseGame(show);
         GameManager.instance.Player_ChangeActionMap(true, 0, show ? "UI" : "Player");
+        GameManager.playerData[0].playerController.LockCursor(!show);
         GameManager.instance.EventSystem_SelectUIButton(pause_resumeButton);
         AudioManager.UpdateMusic(show ? AudioManager.MusicOptions.Pause : AudioManager.MusicOptions.Resume);
     }
@@ -150,7 +136,9 @@ public class Player_Game_UI_Manager : MonoBehaviour // By Samuel White
     public void ShowEndScreen(GameOverEvent gameOverEvent)
     {
         resultsBackground.sprite = resultsBackgrounds[(int)gameOverEvent];
+        Debug.Log($"End Screen: {gameOverEvent} | Num = {(int)gameOverEvent}");
         resultsScreen.SetActive(true);
+        GameManager.playerData[0].playerController.LockCursor(false);
         GameManager.instance.Player_ChangeActionMap(false, 0, "UI");
         GameManager.instance.EventSystem_SelectUIButton(results_MainMenuButton);
     }
@@ -167,12 +155,7 @@ public class Player_Game_UI_Manager : MonoBehaviour // By Samuel White
 
     public void ResetGameUI()
     {
-        foreach (var healthBar in playerHealthBars)
-        {
-            healthBar.fillAmount = 1f;
-        }
-
-        playerGameUI[1].SetActive(GameData.isMultiplayer);
+        playerHealthBar.fillAmount = 1;
     }
     #endregion
 
@@ -188,6 +171,13 @@ public class Player_Game_UI_Manager : MonoBehaviour // By Samuel White
     public void ReturnToMainMenu()
     {
         GameData.currentLevel = Scene_Loader_Transition.SceneNames.Main_Menu;
+
+        GameData.isGameStarted = false;
+        GameData.isGameOver = false;
+        GameData.isGameFinished = false;
+        GameData.isPaused = false;
+        GameData.canPause = false;
+
         Scene_Loader_Transition.LoadScene(Scene_Loader_Transition.SceneNames.Main_Menu);
     }
 }
