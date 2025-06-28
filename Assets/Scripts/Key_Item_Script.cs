@@ -33,8 +33,8 @@ public class Key_Item_Script : MonoBehaviour
             {
                 // Add key to player's inventory
                 Game_Events_Manager.instance.GiveKey();
-                Game_Events_Manager.instance.enemyScript.UpdateStage();
-                AudioManager.PlayPlayerSound(PlayerCategory.PlayerSoundTypes.Key_Collected);
+                Game_Events_Manager.instance.enemyScript.UpdateStage((Enemy_StateMachine.Enemy_Stages)GameData.keysCollected);
+                AudioManager.PlayPlayerSound(PlayerCategory.PlayerSoundTypes.Key_Collected, 1);
                 GameManager.playerData[0].playerController.UpdateBomb(60, key, true);
             }
             // Destroy the key item

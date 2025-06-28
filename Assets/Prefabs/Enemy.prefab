@@ -131,7 +131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae6b0ba3385f53a42967dc8cd0327644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meshAgent: {fileID: 5053006936224657861}
   playerVisible: 0
   wallLayer:
     serializedVersion: 2
@@ -146,10 +145,38 @@ MonoBehaviour:
   playerIsBehind: 0
   attackRange: 2
   state: 0
-  stage: 0
+  enemyStage: 0
+  stageDatas:
+  - sprites:
+    - {fileID: 21300000, guid: 905340cb99aff460b8ea43d3baf00d51, type: 3}
+    - {fileID: 21300000, guid: 79fb11eebc8e24819947f845970e6a01, type: 3}
+    chaseSprites:
+    - {fileID: 21300000, guid: e75beabe90e2e48058f8527b9e53c480, type: 3}
+    - {fileID: 21300000, guid: 1973686e22d2248e9b8a62a129361475, type: 3}
+    speed: 2
+  - sprites:
+    - {fileID: 21300000, guid: 905340cb99aff460b8ea43d3baf00d51, type: 3}
+    - {fileID: 21300000, guid: 79fb11eebc8e24819947f845970e6a01, type: 3}
+    chaseSprites:
+    - {fileID: 21300000, guid: e75beabe90e2e48058f8527b9e53c480, type: 3}
+    - {fileID: 21300000, guid: 1973686e22d2248e9b8a62a129361475, type: 3}
+    speed: 2.5
+  - sprites:
+    - {fileID: 21300000, guid: da1ca20fd88be497c99114679347ffa9, type: 3}
+    - {fileID: 21300000, guid: cceec240ee24840279191eeab6f3391a, type: 3}
+    chaseSprites:
+    - {fileID: 21300000, guid: da1ca20fd88be497c99114679347ffa9, type: 3}
+    - {fileID: 21300000, guid: cceec240ee24840279191eeab6f3391a, type: 3}
+    speed: 3
+  - sprites:
+    - {fileID: 21300000, guid: 21fcee554ce084c8594d297fee67c3d4, type: 3}
+    - {fileID: 21300000, guid: 9fcb84c336b734f80af081fa3361c5e9, type: 3}
+    chaseSprites:
+    - {fileID: 21300000, guid: 21fcee554ce084c8594d297fee67c3d4, type: 3}
+    - {fileID: 21300000, guid: 9fcb84c336b734f80af081fa3361c5e9, type: 3}
+    speed: 3.25
   frontSR: {fileID: 1273206745474050758}
   backSR: {fileID: 9165275162894259947}
-  animator: {fileID: 2510640600165317384}
 --- !u!136 &519689334977928075
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -288,7 +315,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8677360207047445241}
-  - component: {fileID: 2510640600165317384}
   m_Layer: 7
   m_Name: Character
   m_TagString: Untagged
@@ -313,24 +339,3 @@ Transform:
   - {fileID: 4500210204338543207}
   m_Father: {fileID: 1295539543973331546}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &2510640600165317384
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6709844296171339670}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 834167cdd622648e49478dc59e97fe93, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0

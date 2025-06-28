@@ -63,6 +63,9 @@ public class GameManager : MonoBehaviour // By Samuel White
         GameData.isGameFinished = false;
         GameData.isPaused = false;
         GameData.canPause = true;
+
+        GameData.keysCollected = 0;
+
         Player_Input_Manager.instance.CreatePlayerCharacter();
 
         AudioManager.PlayMusic(AudioManager.MusicOptions.Play, MusicCategory.MusicSoundTypes.AmbientMusic, 1);

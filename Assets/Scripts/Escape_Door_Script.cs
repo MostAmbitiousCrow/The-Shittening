@@ -9,9 +9,9 @@ public class Escape_Door_Script : MonoBehaviour
     [SerializeField] Vector3 doorClosePos;
     [SerializeField] Vector3 doorOpenPos;
 
-    public void ExitDoorState(bool state)
+    public void ExitDoorState(bool state) // True = Open | False = Closed
     {
-        doorCollider.enabled = state;
+        doorCollider.enabled = !state;
         door.localPosition = state ? doorOpenPos : doorClosePos;
         Player_Game_UI_Manager.instance.UpdateObjective("Escape!");
     }
