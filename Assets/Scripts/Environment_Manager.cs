@@ -12,6 +12,7 @@ public class Environment_Manager : MonoBehaviour
     [SerializeField] List<Transform> keySpawns;
     [Space(10)]
     [SerializeField] GameObject[] KeyPrefabs;
+    [SerializeField] TileCullingSystem tileCullingSystem;
 
     private void Awake()
     {
@@ -35,6 +36,9 @@ public class Environment_Manager : MonoBehaviour
 
     public void SpawnKeys()
     {
+        // Start Tile Culling System
+        tileCullingSystem.Initialise();
+
         List<Transform> availableSpawns = new(keySpawns);
 
         for (int i = 0; i < KeyPrefabs.Length; i++)

@@ -342,6 +342,17 @@ namespace UnityEngine.InputSystem
                 },
                 {
                     ""name"": """",
+                    ""id"": ""2407da2a-ff54-4b6f-b22f-25cd462615a7"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""e7fc8480-0683-40ed-bfaa-f1de3326dac8"",
                     ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
@@ -462,7 +473,7 @@ namespace UnityEngine.InputSystem
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""99e1926a-3297-4c97-99ea-2de5856bb665"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -891,6 +902,17 @@ namespace UnityEngine.InputSystem
                     ""name"": """",
                     ""id"": ""ac8c16d0-504b-4f59-a2a3-2067175d3cef"",
                     ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a1570f0d-71eb-46f0-809d-96c7f9ebc916"",
+                    ""path"": ""<Keyboard>/m"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
